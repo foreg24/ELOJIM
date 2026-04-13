@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="logo.png" type="image/png">
+    <title>Panel de Administración - Fundación Elojim Jadach</title>
+    <link rel="stylesheet" href="admin-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-container">
+            <div class="login-logo">
+                <img src="logo2.png" alt="Logo">
+                <h2>Fundación Elojim Jadach</h2>
+                <p>Panel de Administración</p>
+            </div>
+            
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="loginEmail">Correo electrónico</label>
+                    <input type="email" id="loginEmail" placeholder="user@example.x" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="loginPassword">Contraseña</label>
+                    <div class="password-input">
+                        <input type="password" id="loginPassword" placeholder="••••••••" required>
+                        <button type="button" class="toggle-password" onclick="togglePassword('loginPassword')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="loginError" class="login-error" style="display: none;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    <span>Acceso denegado. Credenciales incorrectas.</span>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-full">
+                    Iniciar sesión →
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard (Hidden until login) -->
+    <div id="adminDashboard" class="admin-dashboard" style="display: none;">
+        <!-- Mobile Header -->
+        <header class="admin-mobile-header">
+            <button class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <a href="index.html" class="logo">
+                <img src="logo2.png" alt="Logo">
+                <span>Fundación Elojim</span>
+            </a>
+        </header>
+
+        <!-- Sidebar -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="logo">
+                    <img src="logo2.png" alt="Logo">
+                    <div class="logo-text">
+                        <span class="logo-main">Fundación Elojim</span>
+                        <span class="logo-sub">Panel Admin</span>
+                    </div>
+                </a>
+                <button class="sidebar-close" id="sidebarClose">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-section="dashboard">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
+                    <span>Dashboard</span>
+                </button>
+                
+                <button class="nav-item" data-section="calendario">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    <span>Calendario de Eventos</span>
+                </button>
+                
+                <button class="nav-item" data-section="noticias">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    </svg>
+                    <span>Noticias</span>
+                </button>
+                
+                <button class="nav-item" data-section="contactos">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                    <span>Contactos</span>
+                    <span class="badge" id="contactosBadge">0</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn" onclick="logout()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    <span>Cerrar sesión</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Overlay for mobile -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Dashboard Section -->
+            <section id="section-dashboard" class="admin-section active">
+                <h1>Dashboard General</h1>
+                
+                <div class="dashboard-cards">
+                    <div class="dashboard-card">
+                        <div class="card-icon blue">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                        </div>
+                        <div class="card-info">
+                            <h3 id="totalEventos">0</h3>
+                            <p>Eventos próximos</p>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-card">
+                        <div class="card-icon green">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                            </svg>
+                        </div>
+                        <div class="card-info">
+                            <h3 id="totalNoticias">0</h3>
+                            <p>Noticias publicadas</p>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-card">
+                        <div class="card-icon orange">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                        </div>
+                        <div class="card-info">
+                            <h3 id="totalContactos">0</h3>
+                            <p>Mensajes nuevos</p>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-card">
+                        <div class="card-icon purple">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                        </div>
+                        <div class="card-info">
+                            <h3 id="totalTrabajadores">0</h3>
+                            <p>Trabajadores</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Redes Sociales -->
+                <div class="admin-section-card">
+                    <h2>Redes Sociales - Credenciales</h2>
+                    <p class="section-desc">Gestiona los enlaces y credenciales de acceso a las redes sociales</p>
+                    
+                    <div class="redes-admin" id="redesAdmin">
+                        <!-- Se carga dinámicamente -->
+                    </div>
+                </div>
+
+                <!-- Trabajadores -->
+                <div class="admin-section-card">
+                    <div class="section-header-flex">
+                        <div>
+                            <h2>Equipo de Trabajo</h2>
+                            <p class="section-desc">Gestiona los miembros del equipo</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="abrirModalTrabajador()">
+                            + Agregar trabajador
+                        </button>
+                    </div>
+                    
+                    <div class="trabajadores-table-container">
+                        <table class="admin-table" id="trabajadoresTable">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Rol</th>
+                                    <th>Email</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Se carga dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Calendario Section -->
+            <section id="section-calendario" class="admin-section">
+                <div class="section-header-flex">
+                    <div>
+                        <h1>Calendario de Eventos</h1>
+                        <p class="section-desc">Gestiona los eventos y actividades de la fundación</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="abrirModalEvento()">
+                        + Nuevo evento
+                    </button>
+                </div>
+
+                <!-- Vista Toggle -->
+                <div class="view-toggle">
+                    <button class="toggle-btn active" data-view="calendario" onclick="cambiarVistaCalendario('calendario')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                        Calendario
+                    </button>
+                    <button class="toggle-btn" data-view="lista" onclick="cambiarVistaCalendario('lista')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="8" y1="6" x2="21" y2="6"></line>
+                            <line x1="8" y1="12" x2="21" y2="12"></line>
+                            <line x1="8" y1="18" x2="21" y2="18"></line>
+                            <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                            <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                            <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                        </svg>
+                        Lista
+                    </button>
+                </div>
+
+                <!-- Filtros -->
+                <div class="filtros-eventos">
+                    <button class="filtro-btn active" onclick="filtrarEventos('todos')">Todos</button>
+                    <button class="filtro-btn" onclick="filtrarEventos('proximos')">Próximos</button>
+                    <button class="filtro-btn" onclick="filtrarEventos('pasados')">Pasados</button>
+                </div>
+
+                <!-- Vista Calendario -->
+                <div id="vistaCalendario" class="vista-calendario">
+                    <div class="calendario-header">
+                        <button class="btn-nav" onclick="cambiarSemana(-1)">← Semana anterior</button>
+                        <h3 id="rangoSemana">Semana actual</h3>
+                        <button class="btn-nav" onclick="cambiarSemana(1)">Semana siguiente →</button>
+                    </div>
+                    
+                    <div class="calendario-semanal" id="calendarioSemanal">
+                        <!-- Se genera dinámicamente -->
+                    </div>
+                </div>
+
+                <!-- Vista Lista -->
+                <div id="vistaLista" class="vista-lista" style="display: none;">
+                    <div class="eventos-lista" id="eventosLista">
+                        <!-- Se carga dinámicamente -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Noticias Section -->
+            <section id="section-noticias" class="admin-section">
+                <div class="section-header-flex">
+                    <div>
+                        <h1>Gestión de Noticias</h1>
+                        <p class="section-desc">Crea, edita y publica noticias</p>
+                    </div>
+                </div>
+
+                <!-- Formulario Nueva Noticia -->
+                <div class="admin-section-card">
+                    <h2>Crear nueva noticia</h2>
+                    <form id="formNoticia" class="form-noticia">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="noticiaTitulo">Título *</label>
+                                <input type="text" id="noticiaTitulo" required placeholder="Título de la noticia">
+                            </div>
+                            <div class="form-group">
+                                <label for="noticiaAutores">Autores (separados por coma)</label>
+                                <input type="text" id="noticiaAutores" placeholder="Ej: María González, Carlos Ruiz">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="noticiaContenido">Contenido *</label>
+                            <textarea id="noticiaContenido" rows="8" required placeholder="Escribe el contenido completo de la noticia..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Imágenes</label>
+                            <div class="imagenes-upload" id="imagenesUpload">
+                                <div class="upload-zone" onclick="document.getElementById('inputImagenes').click()">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="17 8 12 3 7 8"></polyline>
+                                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                                    </svg>
+                                    <p>Arrastra imágenes aquí o haz clic para seleccionar</p>
+                                    <input type="file" id="inputImagenes" multiple accept="image/*" style="display: none;">
+                                </div>
+                                <div class="imagenes-preview" id="imagenesPreview"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="noticiaEnlaces">Enlaces relacionados (uno por línea)</label>
+                            <textarea id="noticiaEnlaces" rows="3" placeholder="https://ejemplo.com&#10;https://otro-enlace.com"></textarea>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" onclick="guardarBorrador()">Guardar borrador</button>
+                            <button type="submit" class="btn btn-primary">Publicar noticia</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Noticias Publicadas -->
+                <div class="admin-section-card">
+                    <h2>Noticias publicadas</h2>
+                    <div class="noticias-admin-lista" id="noticiasAdminLista">
+                        <!-- Se carga dinámicamente -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contactos Section -->
+            <section id="section-contactos" class="admin-section">
+                <div class="section-header-flex">
+                    <div>
+                        <h1>Mensajes de Contacto</h1>
+                        <p class="section-desc">Gestiona los mensajes recibidos desde el formulario de contacto</p>
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="tabs-contactos">
+                    <button class="tab-btn active" onclick="filtrarContactos('no-leidos')">
+                        No leídos
+                        <span class="tab-badge" id="badgeNoLeidos">0</span>
+                    </button>
+                    <button class="tab-btn" onclick="filtrarContactos('leidos')">
+                        Leídos
+                    </button>
+                    <button class="tab-btn" onclick="filtrarContactos('todos')">
+                        Todos
+                    </button>
+                </div>
+
+                <!-- Lista de Contactos (Estilo Gmail) -->
+                <div class="contactos-container" id="contactosContainer">
+                    <!-- Se carga dinámicamente -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modales -->
+    
+    <!-- Modal Evento -->
+    <div class="modal" id="modalEvento">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalEventoTitulo">Nuevo Evento</h3>
+                <button class="modal-close" onclick="cerrarModal('modalEvento')">×</button>
+            </div>
+            <form id="formEvento">
+                <input type="hidden" id="eventoId">
+                <div class="form-group">
+                    <label for="eventoTitulo">Título *</label>
+                    <input type="text" id="eventoTitulo" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="eventoFecha">Fecha *</label>
+                        <input type="date" id="eventoFecha" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventoHoraInicio">Hora inicio</label>
+                        <input type="time" id="eventoHoraInicio">
+                    </div>
+                    <div class="form-group">
+                        <label for="eventoHoraFin">Hora fin</label>
+                        <input type="time" id="eventoHoraFin">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="eventoDescripcion">Descripción</label>
+                    <textarea id="eventoDescripcion" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="eventoLugar">Lugar</label>
+                    <input type="text" id="eventoLugar">
+                </div>
+                <div class="form-group">
+                    <label for="eventoImagen">Imagen</label>
+                    <input type="file" id="eventoImagen" accept="image/*">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="cerrarModal('modalEvento')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar evento</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Trabajador -->
+    <div class="modal" id="modalTrabajador">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTrabajadorTitulo">Agregar Trabajador</h3>
+                <button class="modal-close" onclick="cerrarModal('modalTrabajador')">×</button>
+            </div>
+            <form id="formTrabajador">
+                <input type="hidden" id="trabajadorId">
+                <div class="form-group">
+                    <label for="trabajadorNombre">Nombre completo *</label>
+                    <input type="text" id="trabajadorNombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="trabajadorRol">Rol / Cargo *</label>
+                    <input type="text" id="trabajadorRol" required>
+                </div>
+                <div class="form-group">
+                    <label for="trabajadorEmail">Email</label>
+                    <input type="email" id="trabajadorEmail">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="cerrarModal('modalTrabajador')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Ver Contacto -->
+    <div class="modal modal-large" id="modalContacto">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Mensaje</h3>
+                <button class="modal-close" onclick="cerrarModal('modalContacto')">×</button>
+            </div>
+            <div class="modal-contacto-content" id="modalContactoContent">
+                <!-- Se carga dinámicamente -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="cerrarModal('modalContacto')">Cerrar</button>
+                <button type="button" class="btn btn-danger" onclick="eliminarContactoActual()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" id="modalOverlay" onclick="cerrarTodosModales()"></div>
+
+    <script>
+        // ==================== AUTH ====================
+        let authToken = localStorage.getItem('elojim_token');
+        let currentContactoId = null;
+
+        // Verificar sesión al cargar
+        if (authToken) {
+            verificarToken();
+        }
+
+        async function verificarToken() {
+            try {
+                const response = await fetch('/api/verify', {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                if (response.ok) {
+                    mostrarDashboard();
+                } else {
+                    localStorage.removeItem('elojim_token');
+                }
+            } catch (error) {
+                console.error('Error verificando token:', error);
+            }
+        }
+
+        // Login
+        document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    authToken = data.token;
+                    localStorage.setItem('elojim_token', authToken);
+                    mostrarDashboard();
+                } else {
+                    document.getElementById('loginError').style.display = 'flex';
+                }
+            } catch (error) {
+                console.error('Error en login:', error);
+            }
+        });
+
+        function mostrarDashboard() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('adminDashboard').style.display = 'flex';
+            cargarDashboard();
+        }
+
+        function logout() {
+            localStorage.removeItem('elojim_token');
+            location.reload();
+        }
+
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+
+        // ==================== NAVIGATION ====================
+        const navItems = document.querySelectorAll('.nav-item');
+        const sections = document.querySelectorAll('.admin-section');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const section = item.dataset.section;
+                
+                navItems.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                
+                sections.forEach(s => s.classList.remove('active'));
+                document.getElementById(`section-${section}`).classList.add('active');
+                
+                // Cerrar sidebar en móvil
+                document.getElementById('adminSidebar').classList.remove('active');
+                document.getElementById('sidebarOverlay').classList.remove('active');
+                
+                // Cargar datos específicos
+                if (section === 'calendario') cargarEventos();
+                if (section === 'noticias') cargarNoticiasAdmin();
+                if (section === 'contactos') cargarContactos();
+            });
+        });
+
+        // Mobile menu
+        document.getElementById('menuToggle')?.addEventListener('click', () => {
+            document.getElementById('adminSidebar').classList.add('active');
+            document.getElementById('sidebarOverlay').classList.add('active');
+        });
+
+        document.getElementById('sidebarClose')?.addEventListener('click', () => {
+            document.getElementById('adminSidebar').classList.remove('active');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+        });
+
+        document.getElementById('sidebarOverlay')?.addEventListener('click', () => {
+            document.getElementById('adminSidebar').classList.remove('active');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+        });
+
+        // ==================== DASHBOARD ====================
+        async function cargarDashboard() {
+            try {
+                // Cargar contadores
+                const [eventos, noticias, contactos, trabajadores, redes] = await Promise.all([
+                    fetch('/api/eventos', { headers: { 'Authorization': `Bearer ${authToken}` } }).then(r => r.json()),
+                    fetch('/api/noticias?publicadas=true').then(r => r.json()),
+                    fetch('/api/contactos?leido=false', { headers: { 'Authorization': `Bearer ${authToken}` } }).then(r => r.json()),
+                    fetch('/api/trabajadores', { headers: { 'Authorization': `Bearer ${authToken}` } }).then(r => r.json()),
+                    fetch('/api/redes', { headers: { 'Authorization': `Bearer ${authToken}` } }).then(r => r.json())
+                ]);
+
+                document.getElementById('totalEventos').textContent = eventos.filter(e => new Date(e.fecha) >= new Date()).length;
+                document.getElementById('totalNoticias').textContent = noticias.length;
+                document.getElementById('totalContactos').textContent = contactos.length;
+                document.getElementById('totalTrabajadores').textContent = trabajadores.length;
+                document.getElementById('contactosBadge').textContent = contactos.length;
+
+                // Renderizar redes
+                renderizarRedes(redes);
+                
+                // Renderizar trabajadores
+                renderizarTrabajadores(trabajadores);
+            } catch (error) {
+                console.error('Error cargando dashboard:', error);
+            }
+        }
+
+        function renderizarRedes(redes) {
+            const container = document.getElementById('redesAdmin');
+            const iconos = {
+                facebook: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>',
+                instagram: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>',
+                twitter: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>',
+                tiktok: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/></svg>'
+            };
+
+            container.innerHTML = Object.entries(redes).map(([key, red]) => `
+                <div class="red-admin-item">
+                    <div class="red-admin-icon">${iconos[key] || ''}</div>
+                    <div class="red-admin-info">
+                        <h4>${key.charAt(0).toUpperCase() + key.slice(1)}</h4>
+                        <input type="url" value="${red.url}" onchange="actualizarRed('${key}', 'url', this.value)" placeholder="URL">
+                        <input type="text" value="${red.usuario}" onchange="actualizarRed('${key}', 'usuario', this.value)" placeholder="Usuario">
+                        <div class="password-field">
+                            <input type="password" value="${red.password}" onchange="actualizarRed('${key}', 'password', this.value)" placeholder="Contraseña" id="pass-${key}">
+                            <button type="button" onclick="togglePassword('pass-${key}')" class="btn-eye">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function actualizarRed(plataforma, campo, valor) {
+            try {
+                const response = await fetch(`/api/redes/${plataforma}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({ [campo]: valor })
+                });
+                if (!response.ok) throw new Error('Error actualizando red');
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al guardar cambios');
+            }
+        }
+
+        // ==================== TRABAJADORES ====================
+        function renderizarTrabajadores(trabajadores) {
+            const tbody = document.querySelector('#trabajadoresTable tbody');
+            tbody.innerHTML = trabajadores.map(t => `
+                <tr>
+                    <td>${t.nombre}</td>
+                    <td>${t.rol}</td>
+                    <td>${t.email || '-'}</td>
+                    <td>
+                        <button class="btn-icon" onclick="editarTrabajador('${t.id}')" title="Editar">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                            </svg>
+                        </button>
+                        <button class="btn-icon btn-danger" onclick="eliminarTrabajador('${t.id}')" title="Eliminar">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="3 6 5 6 21 6"></polyline>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                            </svg>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function abrirModalTrabajador(id = null) {
+            document.getElementById('modalTrabajadorTitulo').textContent = id ? 'Editar Trabajador' : 'Agregar Trabajador';
+            document.getElementById('trabajadorId').value = id || '';
+            
+            if (id) {
+                // Cargar datos para editar
+                fetch(`/api/trabajadores`, { headers: { 'Authorization': `Bearer ${authToken}` } })
+                    .then(r => r.json())
+                    .then(data => {
+                        const t = data.find(x => x.id === id);
+                        if (t) {
+                            document.getElementById('trabajadorNombre').value = t.nombre;
+                            document.getElementById('trabajadorRol').value = t.rol;
+                            document.getElementById('trabajadorEmail').value = t.email || '';
+                        }
+                    });
+            } else {
+                document.getElementById('formTrabajador').reset();
+            }
+            
+            abrirModal('modalTrabajador');
+        }
+
+        document.getElementById('formTrabajador')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('trabajadorId').value;
+            const data = {
+                nombre: document.getElementById('trabajadorNombre').value,
+                rol: document.getElementById('trabajadorRol').value,
+                email: document.getElementById('trabajadorEmail').value
+            };
+
+            try {
+                const url = id ? `/api/trabajadores/${id}` : '/api/trabajadores';
+                const method = id ? 'PUT' : 'POST';
+                
+                const response = await fetch(url, {
+                    method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    cerrarModal('modalTrabajador');
+                    cargarDashboard();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+
+        async function eliminarTrabajador(id) {
+            if (!confirm('¿Eliminar este trabajador?')) return;
+            
+            try {
+                await fetch(`/api/trabajadores/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                cargarDashboard();
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // ==================== CALENDARIO ====================
+        let semanaActual = new Date();
+        let vistaCalendarioActual = 'calendario';
+        let filtroEventosActual = 'todos';
+
+        function cambiarVistaCalendario(vista) {
+            vistaCalendarioActual = vista;
+            document.querySelectorAll('.view-toggle .toggle-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector(`.view-toggle .toggle-btn[data-view="${vista}"]`).classList.add('active');
+            
+            document.getElementById('vistaCalendario').style.display = vista === 'calendario' ? 'block' : 'none';
+            document.getElementById('vistaLista').style.display = vista === 'lista' ? 'block' : 'none';
+            
+            cargarEventos();
+        }
+
+        function filtrarEventos(filtro) {
+            filtroEventosActual = filtro;
+            document.querySelectorAll('.filtros-eventos .filtro-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            cargarEventos();
+        }
+
+        function cambiarSemana(direccion) {
+            semanaActual.setDate(semanaActual.getDate() + (direccion * 7));
+            cargarEventos();
+        }
+
+        async function cargarEventos() {
+            try {
+                const response = await fetch('/api/eventos', {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                let eventos = await response.json();
+
+                // Filtrar según selección
+                const ahora = new Date();
+                if (filtroEventosActual === 'proximos') {
+                    eventos = eventos.filter(e => new Date(e.fecha) >= ahora);
+                } else if (filtroEventosActual === 'pasados') {
+                    eventos = eventos.filter(e => new Date(e.fecha) < ahora);
+                }
+
+                if (vistaCalendarioActual === 'calendario') {
+                    renderizarCalendarioSemanal(eventos);
+                } else {
+                    renderizarListaEventos(eventos);
+                }
+            } catch (error) {
+                console.error('Error cargando eventos:', error);
+            }
+        }
+
+        function renderizarCalendarioSemanal(eventos) {
+            // Calcular inicio y fin de semana
+            const inicioSemana = new Date(semanaActual);
+            inicioSemana.setDate(inicioSemana.getDate() - inicioSemana.getDay());
+            const finSemana = new Date(inicioSemana);
+            finSemana.setDate(finSemana.getDate() + 6);
+
+            document.getElementById('rangoSemana').textContent = 
+                `${inicioSemana.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })} - ${finSemana.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' })}`;
+
+            const dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+            let html = '';
+
+            for (let i = 0; i < 7; i++) {
+                const fecha = new Date(inicioSemana);
+                fecha.setDate(fecha.getDate() + i);
+                const fechaStr = fecha.toISOString().split('T')[0];
+                
+                const eventosDia = eventos.filter(e => e.fecha === fechaStr);
+                const esHoy = fecha.toDateString() === new Date().toDateString();
+
+                html += `
+                    <div class="calendario-dia ${esHoy ? 'hoy' : ''}">
+                        <div class="dia-header">
+                            <span class="dia-nombre">${dias[i]}</span>
+                            <span class="dia-numero">${fecha.getDate()}</span>
+                        </div>
+                        <div class="dia-eventos">
+                            ${eventosDia.map(e => `
+                                <div class="evento-mini" onclick="verEvento('${e.id}')">
+                                    <span class="evento-hora">${e.horaInicio || '--:--'}</span>
+                                    <span class="evento-titulo">${e.titulo}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            document.getElementById('calendarioSemanal').innerHTML = html;
+        }
+
+        function renderizarListaEventos(eventos) {
+            const container = document.getElementById('eventosLista');
+            
+            if (eventos.length === 0) {
+                container.innerHTML = '<p class="no-resultados">No hay eventos</p>';
+                return;
+            }
+
+            container.innerHTML = eventos.map(e => {
+                const fecha = new Date(e.fecha);
+                const esPasado = fecha < new Date();
+                
+                return `
+                    <div class="evento-lista-item ${esPasado ? 'pasado' : ''}">
+                        <div class="evento-fecha">
+                            <span class="mes">${fecha.toLocaleDateString('es-ES', { month: 'short' })}</span>
+                            <span class="dia">${fecha.getDate()}</span>
+                        </div>
+                        <div class="evento-info">
+                            <h4>${e.titulo}</h4>
+                            <p>${e.descripcion || 'Sin descripción'}</p>
+                            <span class="evento-meta">
+                                ${e.horaInicio ? `🕐 ${e.horaInicio}${e.horaFin ? ` - ${e.horaFin}` : ''}` : ''}
+                                ${e.lugar ? `📍 ${e.lugar}` : ''}
+                            </span>
+                        </div>
+                        <div class="evento-acciones">
+                            <button class="btn-icon" onclick="editarEvento('${e.id}')">✏️</button>
+                            <button class="btn-icon btn-danger" onclick="eliminarEvento('${e.id}')">🗑️</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function abrirModalEvento() {
+            document.getElementById('modalEventoTitulo').textContent = 'Nuevo Evento';
+            document.getElementById('eventoId').value = '';
+            document.getElementById('formEvento').reset();
+            abrirModal('modalEvento');
+        }
+
+        function verEvento(id) {
+            editarEvento(id);
+        }
+
+        async function editarEvento(id) {
+            try {
+                const response = await fetch('/api/eventos', {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                const eventos = await response.json();
+                const e = eventos.find(x => x.id === id);
+                
+                if (e) {
+                    document.getElementById('modalEventoTitulo').textContent = 'Editar Evento';
+                    document.getElementById('eventoId').value = e.id;
+                    document.getElementById('eventoTitulo').value = e.titulo;
+                    document.getElementById('eventoFecha').value = e.fecha;
+                    document.getElementById('eventoHoraInicio').value = e.horaInicio || '';
+                    document.getElementById('eventoHoraFin').value = e.horaFin || '';
+                    document.getElementById('eventoDescripcion').value = e.descripcion || '';
+                    document.getElementById('eventoLugar').value = e.lugar || '';
+                    abrirModal('modalEvento');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        document.getElementById('formEvento')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('eventoId').value;
+            const formData = new FormData();
+            
+            formData.append('titulo', document.getElementById('eventoTitulo').value);
+            formData.append('fecha', document.getElementById('eventoFecha').value);
+            formData.append('horaInicio', document.getElementById('eventoHoraInicio').value);
+            formData.append('horaFin', document.getElementById('eventoHoraFin').value);
+            formData.append('descripcion', document.getElementById('eventoDescripcion').value);
+            formData.append('lugar', document.getElementById('eventoLugar').value);
+            
+            const imagen = document.getElementById('eventoImagen').files[0];
+            if (imagen) formData.append('imagen', imagen);
+
+            try {
+                const url = id ? `/api/eventos/${id}` : '/api/eventos';
+                const method = id ? 'PUT' : 'POST';
+                
+                const response = await fetch(url, {
+                    method,
+                    headers: { 'Authorization': `Bearer ${authToken}` },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    cerrarModal('modalEvento');
+                    cargarEventos();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+
+        async function eliminarEvento(id) {
+            if (!confirm('¿Eliminar este evento?')) return;
+            
+            try {
+                await fetch(`/api/eventos/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                cargarEventos();
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // ==================== NOTICIAS ====================
+        let imagenesNoticia = [];
+
+        document.getElementById('inputImagenes')?.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            imagenesNoticia = [...imagenesNoticia, ...files];
+            renderizarPreviewImagenes();
+        });
+
+        function renderizarPreviewImagenes() {
+            const container = document.getElementById('imagenesPreview');
+            container.innerHTML = imagenesNoticia.map((file, index) => `
+                <div class="imagen-preview-item">
+                    <img src="${URL.createObjectURL(file)}" alt="">
+                    <input type="url" placeholder="Link opcional para esta imagen" class="imagen-link" data-index="${index}">
+                    <button type="button" onclick="eliminarImagenNoticia(${index})">×</button>
+                </div>
+            `).join('');
+        }
+
+        function eliminarImagenNoticia(index) {
+            imagenesNoticia.splice(index, 1);
+            renderizarPreviewImagenes();
+        }
+
+        async function cargarNoticiasAdmin() {
+            try {
+                const response = await fetch('/api/noticias', {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                const noticias = await response.json();
+                
+                const container = document.getElementById('noticiasAdminLista');
+                container.innerHTML = noticias.map(n => `
+                    <div class="noticia-admin-item ${n.oculta ? 'oculta' : ''} ${!n.publicada ? 'borrador' : ''}">
+                        <div class="noticia-admin-img">
+                            <img src="${n.imagenes?.[0]?.url || 'https://via.placeholder.com/100'}" alt="">
+                        </div>
+                        <div class="noticia-admin-info">
+                            <h4>${n.titulo}</h4>
+                            <span class="noticia-estado ${n.publicada ? 'publicada' : 'borrador'}">
+                                ${n.publicada ? 'Publicada' : 'Borrador'}
+                            </span>
+                            <span class="noticia-fecha">${new Date(n.fechaPublicacion).toLocaleDateString('es-ES')}</span>
+                        </div>
+                        <div class="noticia-admin-actions">
+                            <button class="btn-icon" onclick="editarNoticia('${n.id}')" title="Editar">✏️</button>
+                            <button class="btn-icon" onclick="toggleOcultarNoticia('${n.id}', ${!n.oculta})" title="${n.oculta ? 'Mostrar' : 'Ocultar'}">
+                                ${n.oculta ? '👁️' : '🙈'}
+                            </button>
+                            <button class="btn-icon btn-danger" onclick="eliminarNoticia('${n.id}')" title="Eliminar">🗑️</button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error cargando noticias:', error);
+            }
+        }
+
+        document.getElementById('formNoticia')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            formData.append('titulo', document.getElementById('noticiaTitulo').value);
+            formData.append('autores', document.getElementById('noticiaAutores').value);
+            formData.append('contenido', document.getElementById('noticiaContenido').value);
+            formData.append('publicada', 'true');
+            
+            // Enlaces
+            const enlaces = document.getElementById('noticiaEnlaces').value.split('\n').filter(e => e.trim());
+            formData.append('enlaces', JSON.stringify(enlaces));
+            
+            // Imágenes con sus links
+            imagenesNoticia.forEach((file, index) => {
+                formData.append('imagenes', file);
+                const link = document.querySelector(`.imagen-link[data-index="${index}"]`)?.value || '';
+                formData.append(`link_${file.name}`, link);
+            });
+
+            try {
+                const response = await fetch('/api/noticias', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${authToken}` },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    document.getElementById('formNoticia').reset();
+                    imagenesNoticia = [];
+                    renderizarPreviewImagenes();
+                    cargarNoticiasAdmin();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+
+        function guardarBorrador() {
+            // Similar a publicar pero con publicada = false
+            // Implementar según necesidad
+            alert('Borrador guardado');
+        }
+
+        
+
+        async function toggleOcultarNoticia(id, ocultar) {
+            try {
+                await fetch(`/api/noticias/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({ oculta: ocultar })
+                });
+                cargarNoticiasAdmin();
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function eliminarNoticia(id) {
+            if (!confirm('¿Eliminar esta noticia permanentemente?')) return;
+            
+            try {
+                await fetch(`/api/noticias/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                cargarNoticiasAdmin();
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // ==================== CONTACTOS ====================
+        let filtroContactosActual = 'no-leidos';
+
+        async function cargarContactos() {
+            try {
+                const url = filtroContactosActual === 'todos' ? '/api/contactos' : 
+                           filtroContactosActual === 'leidos' ? '/api/contactos?leido=true' : 
+                           '/api/contactos?leido=false';
+                
+                const response = await fetch(url, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                const contactos = await response.json();
+
+                document.getElementById('badgeNoLeidos').textContent = 
+                    filtroContactosActual === 'no-leidos' ? contactos.length : 
+                    await fetch('/api/contactos?leido=false', { headers: { 'Authorization': `Bearer ${authToken}` } })
+                        .then(r => r.json()).then(d => d.length);
+
+                const container = document.getElementById('contactosContainer');
+                
+                if (contactos.length === 0) {
+                    container.innerHTML = '<p class="no-resultados">No hay mensajes</p>';
+                    return;
+                }
+
+                container.innerHTML = contactos.map(c => `
+                    <div class="contacto-item ${c.leido ? 'leido' : 'no-leido'}" onclick="verContacto('${c.id}')">
+                        <div class="contacto-sender">
+                            <div class="sender-avatar">${(c.nombre || 'A').charAt(0).toUpperCase()}</div>
+                            <div class="sender-info">
+                                <h4>${c.nombre || 'Anónimo'} ${!c.leido ? '<span class="unread-dot"></span>' : ''}</h4>
+                                <p>${c.email}</p>
+                            </div>
+                        </div>
+                        <div class="contacto-preview">
+                            <h5>${c.asunto || '(Sin asunto)'}</h5>
+                            <p>${c.mensaje.substring(0, 100)}...</p>
+                        </div>
+                        <div class="contacto-meta">
+                            <span class="fecha">${new Date(c.fecha).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}</span>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error cargando contactos:', error);
+            }
+        }
+
+        function filtrarContactos(filtro) {
+            filtroContactosActual = filtro;
+            document.querySelectorAll('.tabs-contactos .tab-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            cargarContactos();
+        }
+
+        async function verContacto(id) {
+            currentContactoId = id;
+            
+            try {
+                // Marcar como leído
+                await fetch(`/api/contactos/${id}/leido`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({ leido: true })
+                });
+
+                const response = await fetch('/api/contactos', {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                const contactos = await response.json();
+                const c = contactos.find(x => x.id === id);
+
+                if (c) {
+                    document.getElementById('modalContactoContent').innerHTML = `
+                        <div class="contacto-detail-header">
+                            <h4>De: ${c.nombre || 'Anónimo'} &lt;${c.email}&gt;</h4>
+                            <span class="contacto-fecha">${new Date(c.fecha).toLocaleString('es-ES')}</span>
+                        </div>
+                        <h5 class="contacto-asunto">${c.asunto || '(Sin asunto)'}</h5>
+                        <div class="contacto-mensaje">${c.mensaje.replace(/\n/g, '<br>')}</div>
+                    `;
+                    abrirModal('modalContacto');
+                    cargarContactos();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function eliminarContactoActual() {
+            if (!currentContactoId || !confirm('¿Eliminar este mensaje?')) return;
+            
+            try {
+                await fetch(`/api/contactos/${currentContactoId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                cerrarModal('modalContacto');
+                cargarContactos();
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // ==================== MODALES ====================
+        function abrirModal(id) {
+            document.getElementById(id).classList.add('active');
+            document.getElementById('modalOverlay').classList.add('active');
+        }
+
+        function cerrarModal(id) {
+            document.getElementById(id).classList.remove('active');
+            document.getElementById('modalOverlay').classList.remove('active');
+        }
+
+        function cerrarTodosModales() {
+            document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+            document.getElementById('modalOverlay').classList.remove('active');
+        }
+    </script>
+</body>
+</html>

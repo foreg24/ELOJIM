@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="logo.png" type="image/png">
+    <title>Noticias - Fundación Elojim Jadach</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--bg-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loading-content {
+            text-align: center;
+            max-width: 600px;
+            padding: 2rem;
+        }
+
+        .loading-logo {
+            margin-bottom: 2rem;
+        }
+
+        .loading-logo img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+        }
+
+        .loading-content h1 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .loading-content p {
+            color: var(--text-gray);
+            margin-bottom: 2rem;
+        }
+
+        .loading-skeletons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            opacity: 0.5;
+        }
+
+        .loading-skeletons .skeleton-card {
+            height: 150px;
+        }
+
+        .buscador-noticias {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            position: relative;
+        }
+
+        .buscador-input {
+            width: 100%;
+            padding: 1rem 1.5rem 1rem 3rem;
+            border: 2px solid var(--border-light);
+            border-radius: 50px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .buscador-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .buscador-icono {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+
+        .resultados-info {
+            text-align: center;
+            color: var(--text-gray);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .loading-skeletons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="index.html" class="logo">
+                    <img src="logo2.png" alt="Logo">
+                    <div class="logo-text">
+                        <span class="logo-main">Fundación Elojim</span>
+                        <span class="logo-sub">Jadach</span>
+                    </div>
+                </a>
+                
+                <ul class="nav-links desktop-menu">
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="nosotros.html">Nosotros</a></li>
+                    <li><a href="programas.html">Programas</a></li>
+                    <li><a href="noticias.html" class="active">Noticias</a></li>
+                    <li><a href="contacto.html">Contáctanos</a></li>
+                </ul>
+
+                <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+            </nav>
+
+            <div class="mobile-menu" id="mobileMenu">
+                <div class="mobile-menu-header">
+                    <a href="index.html" class="logo">
+                        <img src="logo2.png" alt="Logo">
+                        <div class="logo-text">
+                            <span class="logo-main">Fundación Elojim</span>
+                            <span class="logo-sub">Jadach</span>
+                        </div>
+                    </a>
+                    <button class="close-btn" id="closeBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+                <ul class="mobile-nav-links">
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="nosotros.html">Nosotros</a></li>
+                    <li><a href="programas.html">Programas</a></li>
+                    <li><a href="noticias.html">Noticias</a></li>
+                    <li><a href="contacto.html">Contáctanos</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <img src="logo2.png" alt="Logo">
+            </div>
+            <h1>Noticias de último momento</h1>
+            <p>Entérate de las últimas noticias publicadas en nuestro sitio web</p>
+            <div class="loading-skeletons">
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="noticias-page" id="mainContent" style="display: none;">
+        <div class="container">
+            <div class="section-header">
+                <h1>Noticias de último momento</h1>
+                <p>Entérate de las últimas noticias publicadas en nuestro sitio web</p>
+            </div>
+
+            <!-- Buscador -->
+            <div class="buscador-noticias">
+                <svg class="buscador-icono" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <input type="text" class="buscador-input" id="buscador" placeholder="Buscar por título o autor..." oninput="buscarNoticias(this.value)">
+            </div>
+
+            <div class="resultados-info" id="resultadosInfo"></div>
+
+            <div class="noticias-filtros">
+                <button class="filtro-btn active" data-filtro="todas" onclick="filtrarNoticias('todas')">Todas</button>
+                <button class="filtro-btn" data-filtro="recientes" onclick="filtrarNoticias('recientes')">Recientes</button>
+                <button class="filtro-btn" data-filtro="populares" onclick="filtrarNoticias('populares')">Populares</button>
+            </div>
+
+            <div class="noticias-grid-completo" id="noticiasContainer">
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+            </div>
+
+            <div class="paginacion" id="paginacion" style="display: none;">
+                <button class="btn btn-secondary" id="btnAnterior" onclick="cambiarPagina(-1)">← Anterior</button>
+                <span id="paginaActual">Página 1</span>
+                <button class="btn btn-secondary" id="btnSiguiente" onclick="cambiarPagina(1)">Siguiente →</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <img src="logo2.png" alt="Logo">
+                        <div class="logo-text">
+                            <span class="logo-main">Fundación Elojim</span>
+                            <span class="logo-sub">Jadach</span>
+                        </div>
+                    </a>
+                    <p>Transformando vidas, construyendo futuros más brillantes para nuestra comunidad.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Enlaces</h4>
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="nosotros.html">Nosotros</a></li>
+                        <li><a href="programas.html">Programas</a></li>
+                        <li><a href="contacto.html">Contacto</a></li>
+                    </ul>
+                </div>
+                < <div class="footer-legal">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Términos y Condiciones</a></li>
+                        <li><a href="#">Política de Privacidad</a></li>
+                        <li><a href="#">Aviso Legal</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h4>Síguenos</h4>
+                    <div class="social-icons">
+                        <a href="https://www.facebook.com/share/164N6Z3yQW/?mibextid=wwXIfr" target="_blank" class="social-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        </a>
+                        <a href="https://www.instagram.com/elojim.jadach" target="_blank" class="social-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </a>
+                        <a href="https://www.tiktok.com/@elojim.jadach" target="_blank" class="social-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 Fundación Elojim Jadach. Todos los derechos reservados. NIT: 901714461-5</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const closeBtn = document.getElementById('closeBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        hamburgerBtn?.addEventListener('click', () => {
+            mobileMenu.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        closeBtn?.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        // Variables globales
+        let todasLasNoticias = [];
+        let pagina = 1;
+        const porPagina = 6;
+        let filtroActual = 'todas';
+        let terminoBusqueda = '';
+
+        // Loading screen con delay de 1.5 segundos
+        setTimeout(() => {
+            document.getElementById('loadingScreen').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+            cargarNoticias();
+        }, 1500);
+
+        async function cargarNoticias(buscar = '') {
+            const container = document.getElementById('noticiasContainer');
+            
+            try {
+                console.log('Cargando noticias...', buscar ? `Búsqueda: ${buscar}` : '');
+                let url = '/api/noticias?publicadas=true';
+                if (buscar) {
+                    url += `&buscar=${encodeURIComponent(buscar)}`;
+                }
+                
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error(`Error ${response.status}: ${response.statusText}`);
+                }
+                
+                todasLasNoticias = await response.json();
+                console.log('Noticias cargadas:', todasLasNoticias.length);
+                
+                if (todasLasNoticias.length === 0) {
+                    container.innerHTML = buscar 
+                        ? '<p class="no-resultados">No se encontraron noticias con ese término</p>'
+                        : '<p class="no-resultados">No hay noticias disponibles</p>';
+                    document.getElementById('paginacion').style.display = 'none';
+                    document.getElementById('resultadosInfo').textContent = buscar 
+                        ? `0 resultados para "${buscar}"`
+                        : '';
+                    return;
+                }
+
+                document.getElementById('resultadosInfo').textContent = buscar
+                    ? `${todasLasNoticias.length} resultado${todasLasNoticias.length !== 1 ? 's' : ''} para "${buscar}"`
+                    : `${todasLasNoticias.length} noticia${todasLasNoticias.length !== 1 ? 's' : ''} disponible${todasLasNoticias.length !== 1 ? 's' : ''}`;
+                
+                aplicarFiltroYRenderizar();
+                
+            } catch (error) {
+                console.error('Error cargando noticias:', error);
+                container.innerHTML = `<p class="no-resultados">Error al cargar noticias: ${error.message}</p>`;
+            }
+        }
+
+        function buscarNoticias(termino) {
+            terminoBusqueda = termino.trim();
+            pagina = 1;
+            
+            // Limpiar filtros visuales cuando se busca
+            if (terminoBusqueda) {
+                document.querySelectorAll('.filtro-btn').forEach(btn => btn.classList.remove('active'));
+                document.querySelector('[data-filtro="todas"]').classList.add('active');
+                filtroActual = 'todas';
+            }
+            
+            cargarNoticias(terminoBusqueda);
+        }
+
+        function filtrarNoticias(filtro) {
+            filtroActual = filtro;
+            pagina = 1;
+            
+            // Actualizar botones activos
+            document.querySelectorAll('.filtro-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.filtro === filtro) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            aplicarFiltroYRenderizar();
+        }
+
+        function aplicarFiltroYRenderizar() {
+            let noticiasFiltradas = [...todasLasNoticias];
+            
+            if (filtroActual === 'recientes') {
+                // Últimos 30 días
+                const hace30Dias = new Date();
+                hace30Dias.setDate(hace30Dias.getDate() - 30);
+                noticiasFiltradas = noticiasFiltradas.filter(n => new Date(n.fechaPublicacion) >= hace30Dias);
+            } else if (filtroActual === 'populares') {
+                // Simulado: ordenar por fecha por ahora (puedes cambiar por vistas luego)
+                noticiasFiltradas.sort((a, b) => new Date(b.fechaPublicacion) - new Date(a.fechaPublicacion));
+            }
+            
+            renderizarNoticias(noticiasFiltradas);
+        }
+
+        function renderizarNoticias(noticias) {
+            const container = document.getElementById('noticiasContainer');
+            const paginacion = document.getElementById('paginacion');
+            
+            const inicio = (pagina - 1) * porPagina;
+            const fin = inicio + porPagina;
+            const paginadas = noticias.slice(inicio, fin);
+            
+            if (paginadas.length === 0) {
+                container.innerHTML = '<p class="no-resultados">No hay noticias en esta página</p>';
+                paginacion.style.display = noticias.length > porPagina ? 'flex' : 'none';
+                actualizarBotonesPaginacion(noticias.length);
+                return;
+            }
+
+            container.innerHTML = paginadas.map(noticia => {
+                // Manejo seguro de autores (array o string)
+                let autoresTexto = 'Fundación Elojim';
+                if (noticia.autores) {
+                    if (Array.isArray(noticia.autores) && noticia.autores.length > 0) {
+                        autoresTexto = noticia.autores.join(', ');
+                    } else if (typeof noticia.autores === 'string' && noticia.autores.trim()) {
+                        autoresTexto = noticia.autores;
+                    }
+                }
+                
+                return `
+                <article class="noticia-card-large">
+                    <a href="noticia-detalle.html?id=${noticia.id}" class="noticia-link">
+                        <div class="noticia-imagen-large">
+                            <img src="${noticia.imagenes?.[0]?.url || 'https://via.placeholder.com/600x400'}" alt="${noticia.titulo}" loading="lazy">
+                        </div>
+                        <div class="noticia-content-large">
+                            <div class="noticia-meta">
+                                <span class="noticia-fecha">${new Date(noticia.fechaPublicacion).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+                                <span class="noticia-autor">Por ${autoresTexto}</span>
+                            </div>
+                            <h2>${noticia.titulo}</h2>
+                            <p>${noticia.contenido.substring(0, 200)}...</p>
+                            <span class="leer-mas">Leer más →</span>
+                        </div>
+                    </a>
+                </article>
+            `}).join('');
+
+            paginacion.style.display = noticias.length > porPagina ? 'flex' : 'none';
+            actualizarBotonesPaginacion(noticias.length);
+        }
+
+        function actualizarBotonesPaginacion(totalNoticias) {
+            const totalPaginas = Math.ceil(totalNoticias / porPagina);
+            
+            document.getElementById('paginaActual').textContent = `Página ${pagina} de ${totalPaginas || 1}`;
+            document.getElementById('btnAnterior').disabled = pagina === 1;
+            document.getElementById('btnSiguiente').disabled = pagina >= totalPaginas || totalPaginas === 0;
+        }
+
+        function cambiarPagina(direccion) {
+            pagina += direccion;
+            if (pagina < 1) pagina = 1;
+            aplicarFiltroYRenderizar();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

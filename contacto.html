@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="logo.png" type="image/png">
+    <title>Contáctanos - Fundación Elojim Jadach</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="index.html" class="logo">
+                    <img src="logo2.png" alt="Logo">
+                    <div class="logo-text">
+                        <span class="logo-main">Fundación Elojim</span>
+                        <span class="logo-sub">Jadach</span>
+                    </div>
+                </a>
+                
+                <ul class="nav-links desktop-menu">
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="nosotros.html">Nosotros</a></li>
+                    <li><a href="programas.html">Programas</a></li>
+                    <li><a href="noticias.html">Noticias</a></li>
+                    <li><a href="contacto.html" class="active">Contáctanos</a></li>
+                </ul>
+
+                <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+            </nav>
+
+            <div class="mobile-menu" id="mobileMenu">
+                <div class="mobile-menu-header">
+                    <a href="index.html" class="logo">
+                        <img src="logo2.png" alt="Logo">
+                        <div class="logo-text">
+                            <span class="logo-main">Fundación Elojim</span>
+                            <span class="logo-sub">Jadach</span>
+                        </div>
+                    </a>
+                    <button class="close-btn" id="closeBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+                <ul class="mobile-nav-links">
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="nosotros.html">Nosotros</a></li>
+                    <li><a href="programas.html">Programas</a></li>
+                    <li><a href="noticias.html">Noticias</a></li>
+                    <li><a href="contacto.html">Contáctanos</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contacto Section -->
+    <section class="contacto-section">
+        <div class="container">
+            <div class="contacto-grid">
+                <!-- Formulario -->
+                <div class="contacto-formulario">
+                    <h1>Contáctanos</h1>
+                    <p>Estamos aquí para escucharte. Envíanos tu mensaje y te responderemos lo antes posible.</p>
+                    
+                    <form id="contactoForm" class="form-contacto">
+                        <div class="form-group">
+                            <label for="nombre">Nombre <span class="opcional">(opcional)</span></label>
+                            <input type="text" id="nombre" name="nombre" placeholder="Tu nombre completo">
+                        </div>
+                        
+                        <div class="form-group obligatorio">
+                            <label for="email">Correo electrónico <span class="requerido">*</span></label>
+                            <input type="email" id="email" name="email" placeholder="tu@email.com" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="asunto">Asunto <span class="opcional">(opcional)</span></label>
+                            <input type="text" id="asunto" name="asunto" placeholder="¿Sobre qué nos quieres contactar?">
+                        </div>
+                        
+                        <div class="form-group obligatorio">
+                            <label for="mensaje">Mensaje <span class="requerido">*</span></label>
+                            <textarea id="mensaje" name="mensaje" rows="5" placeholder="Escribe tu mensaje aquí..." required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-full">
+                            Enviar mensaje →
+                        </button>
+                    </form>
+                    
+                    <div id="mensajeExito" class="mensaje-exito" style="display: none;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        <h3>¡Mensaje enviado!</h3>
+                        <p>Gracias por contactarnos. Te responderemos a la brevedad.</p>
+                    </div>
+                </div>
+
+                <!-- Redes Sociales -->
+                <div class="contacto-redes">
+                    <h2>Síguenos en nuestras redes</h2>
+                    <p>Mantente conectado con nosotros y entérate de nuestras últimas actividades.</p>
+                    
+                    <div class="redes-lista">
+                        <a href="https://www.facebook.com/share/164N6Z3yQW/?mibextid=wwXIfr" target="_blank" class="red-item">
+                            <div class="red-icon facebook">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                            </div>
+                            <div class="red-info">
+                                <span class="red-nombre">Facebook</span>
+                                <span class="red-usuario">Fundación Elojim Jadach</span>
+                            </div>
+                        </a>
+                        
+                        <a href="https://www.instagram.com/elojim.jadach?igsh=MnVwOHphaG85a3Bv&utm_source=qr" target="_blank" class="red-item">
+                            <div class="red-icon instagram">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                            </div>
+                            <div class="red-info">
+                                <span class="red-nombre">Instagram</span>
+                                <span class="red-usuario">@elojim.jadach</span>
+                            </div>
+                        </a>
+                        
+                        <a href="#" target="_blank" class="red-item">
+                            <div class="red-icon twitter">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                            </div>
+                            <div class="red-info">
+                                <span class="red-nombre">X (Twitter)</span>
+                                <span class="red-usuario">@elojimjadach</span>
+                            </div>
+                        </a>
+                        
+                        <a href="https://www.tiktok.com/@elojim.jadach?_r=1&_t=ZS-93KOIWedWBW" target="_blank" class="red-item">
+                            <div class="red-icon tiktok">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/></svg>
+                            </div>
+                            <div class="red-info">
+                                <span class="red-nombre">TikTok</span>
+                                <span class="red-usuario">@elojim.jadach</span>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="contacto-info-adicional">
+                        <h3>Información de contacto</h3>
+                        <p><strong>Email:</strong> info@elojimjadach.org</p>
+                        <p><strong>Teléfono:</strong> +57 (XXX) XXX-XXXX</p>
+                        <p><strong>Dirección:</strong> [Dirección de la fundación]</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <img src="logo2.png" alt="Logo">
+                        <div class="logo-text">
+                            <span class="logo-main">Fundación Elojim</span>
+                            <span class="logo-sub">Jadach</span>
+                        </div>
+                    </a>
+                    <p>Transformando vidas, construyendo futuros más brillantes para nuestra comunidad.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Enlaces</h4>
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="nosotros.html">Nosotros</a></li>
+                        <li><a href="programas.html">Programas</a></li>
+                        <li><a href="contacto.html">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-legal">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Términos y Condiciones</a></li>
+                        <li><a href="#">Política de Privacidad</a></li>
+                        <li><a href="#">Aviso Legal</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h4>Síguenos</h4>
+                    <div class="social-icons">
+                        <a href="https://www.facebook.com/share/164N6Z3yQW/?mibextid=wwXIfr" target="_blank" class="social-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        </a>
+                        <a href="https://www.instagram.com/elojim.jadach?igsh=MnVwOHphaG85a3Bv&utm_source=qr" target="_blank" class="social-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </a>
+                        <a href="https://www.tiktok.com/@elojim.jadach?_r=1&_t=ZS-93KOIWedWBW" target="_blank" class="social-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 Fundación Elojim Jadach. Todos los derechos reservados. NIT: 901714461-5</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const closeBtn = document.getElementById('closeBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        hamburgerBtn?.addEventListener('click', () => {
+            mobileMenu.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        closeBtn?.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        // Formulario de contacto
+        document.getElementById('contactoForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                nombre: document.getElementById('nombre').value,
+                email: document.getElementById('email').value,
+                asunto: document.getElementById('asunto').value,
+                mensaje: document.getElementById('mensaje').value
+            };
+
+            try {
+                const response = await fetch('/api/contactos', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    document.getElementById('contactoForm').style.display = 'none';
+                    document.getElementById('mensajeExito').style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al enviar el mensaje. Intenta nuevamente.');
+            }
+        });
+    </script>
+</body>
+</html>

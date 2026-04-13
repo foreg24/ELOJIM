@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="logo.png" type="image/png" sizes="16x16">
+    <title>Elojim Jadach</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="index.html" class="logo">
+                    <img src="logo2.png" alt="Logo">
+                    <div class="logo-text">
+                        <span class="logo-main">Fundación Elojim</span>
+                        <span class="logo-sub">Jadach</span>
+                    </div>
+                </a>
+                
+                <ul class="nav-links desktop-menu">
+                    <li><a href="index.html" class="active">Inicio</a></li>
+                    <li><a href="nosotros.html">Nosotros</a></li>
+                    <li><a href="programas.html">Programas</a></li>
+                    <li><a href="noticias.html">Noticias</a></li>
+                    <li><a href="contacto.html">Contáctanos</a></li>
+                </ul>
+
+                <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+            </nav>
+
+            <div class="mobile-menu" id="mobileMenu">
+                <div class="mobile-menu-header">
+                    <a href="index.html" class="logo">
+                        <img src="logo2.png" alt="Logo">
+                        <div class="logo-text">
+                            <span class="logo-main">Fundación Elojim</span>
+                            <span class="logo-sub">Jadach</span>
+                        </div>
+                    </a>
+                    <button class="close-btn" id="closeBtn" aria-label="Cerrar menu">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+                <ul class="mobile-nav-links">
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="nosotros.html">Nosotros</a></li>
+                    <li><a href="programas.html">Programas</a></li>
+                    <li><a href="noticias.html">Noticias</a></li>
+                    <li><a href="contacto.html">Contáctanos</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Transformando vidas, <span class="highlight">construyendo</span> <span class="highlight-orange">futuros</span></h1>
+                    <p>Promovemos proyectos con enfoque en desarrollo sostenible y tecnológico, orientados hacia la inclusión y el bienestar común.</p>
+                    <div class="hero-buttons">
+                        <a href="nosotros.html" class="btn btn-primary">Conoce más →</a>
+                        <a href="programas.html" class="btn btn-link">Nuestros programas</a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=600&h=500&fit=crop" alt="Niños sonriendo">
+                    <div class="vision-badge">
+                        <span class="label">Nuestra visión</span>
+                        <span class="year">2030</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Misión y Visión -->
+    <section class="mision-vision" id="nosotros">
+        <div class="container">
+            <div class="mv-grid">
+                <div class="mv-card mision">
+                    <h3>Nuestra Misión</h3>
+                    <p>La Fundación Elojim Jadach está fundamentada en la promoción de proyectos con un enfoque en desarrollo sostenible y tecnología, orientados hacia la inclusión y el bienestar común. Su meta es generar un cambio duradero en la sociedad con modelos de máxima tecnología trabajando en colaboración con modelos de investigación, emprendimiento e innovación.</p>
+                </div>
+                <div class="mv-card vision">
+                    <h3>Nuestra Visión</h3>
+                    <p>Nuestra visión es dirigida a un mundo donde todas las personas tengan la oportunidad de alcanzar su máximo potencial y vivir vidas dignas y plenas. Visualizamos en el 2030 una sociedad donde la equidad, las oportunidades, el respeto por la diversidad y la solidaridad son los pilares fundamentales.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Áreas de Impacto -->
+    <section class="areas-impacto" id="programas">
+        <div class="container">
+            <div class="section-header">
+                <h2>Nuestras Áreas de Impacto</h2>
+                <p>Trabajamos en múltiples frentes para crear un impacto positivo y duradero en nuestra comunidad</p>
+            </div>
+            <div class="areas-grid">
+                <div class="area-card">
+                    <div class="area-icon icon-orange">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <h4>Empoderamiento de la Mujer</h4>
+                    <p>Brindamos apoyo a mujeres en situación de vulnerabilidad a través de programas de capacitación, emprendimiento y asistencia social.</p>
+                </div>
+                <div class="area-card">
+                    <div class="area-icon icon-blue">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
+                    </div>
+                    <h4>Innovación y Tecnología Aplicada</h4>
+                    <p>Incorporamos soluciones tecnológicas en el sector agropecuario y social para optimizar procesos productivos y mejorar la calidad de vida.</p>
+                </div>
+                <div class="area-card">
+                    <div class="area-icon icon-green">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                            <path d="M2 17l10 5 10-5"></path>
+                            <path d="M2 12l10 5 10-5"></path>
+                        </svg>
+                    </div>
+                    <h4>Seguridad Alimentaria y Agricultura Sostenible</h4>
+                    <p>Promovemos la producción agrícola inteligente y la agricultura urbana para garantizar el acceso a alimentos saludables y sostenibles.</p>
+                </div>
+                <div class="area-card">
+                    <div class="area-icon icon-purple">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
+                        </svg>
+                    </div>
+                    <h4>Inclusión Social y Diversidad</h4>
+                    <p>Impulsamos espacios de respeto y equidad para poblaciones vulnerables, garantizando su integración y participación en la sociedad.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Noticias Destacadas (Últimas 3) -->
+    <section class="noticias-destacadas" id="noticias-preview">
+        <div class="container">
+            <div class="section-header">
+                <h2>Últimas Noticias</h2>
+                <p>Mantente informado sobre nuestros proyectos, eventos y el impacto que generamos en la comunidad</p>
+            </div>
+            <div class="noticias-grid" id="ultimasNoticias">
+                <!-- Se carga dinámicamente desde JS -->
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+            </div>
+            <div class="noticias-footer">
+                <a href="noticias.html" class="btn btn-primary btn-full">Ver más noticias →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <img src="logo2.png" alt="Logo">
+                        <div class="logo-text">
+                            <span class="logo-main">Fundación Elojim</span>
+                            <span class="logo-sub">Jadach</span>
+                        </div>
+                    </a>
+                    <p>Transformando vidas, construyendo futuros más brillantes para nuestra comunidad.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Enlaces</h4>
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="nosotros.html">Nosotros</a></li>
+                        <li><a href="programas.html">Programas</a></li>
+                        <li><a href="contacto.html">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-legal">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Términos y Condiciones</a></li>
+                        <li><a href="#">Política de Privacidad</a></li>
+                        <li><a href="#">Aviso Legal</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h4>Síguenos</h4>
+                    <div class="social-icons">
+                        <a href="https://www.facebook.com/share/164N6Z3yQW/?mibextid=wwXIfr" target="_blank" class="social-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        </a>
+                        <a href="https://www.instagram.com/elojim.jadach?igsh=MnVwOHphaG85a3Bv&utm_source=qr" target="_blank" class="social-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </a>
+                        <a href="https://www.tiktok.com/@elojim.jadach?_r=1&_t=ZS-93KOIWedWBW" target="_blank" class="social-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 Fundación Elojim Jadach. Todos los derechos reservados. NIT: 901714461-5</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const closeBtn = document.getElementById('closeBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileLinks = document.querySelectorAll('.mobile-nav-links a');
+
+        function openMenu() {
+            mobileMenu.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMenu() {
+            mobileMenu.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        hamburgerBtn.addEventListener('click', openMenu);
+        closeBtn.addEventListener('click', closeMenu);
+        mobileLinks.forEach(link => link.addEventListener('click', closeMenu));
+        mobileMenu.addEventListener('click', (e) => {
+            if (e.target === mobileMenu) closeMenu();
+        });
+
+        // Cargar últimas noticias
+        async function cargarUltimasNoticias() {
+            try {
+                const response = await fetch('/api/noticias?publicadas=true');
+                const noticias = await response.json();
+                const container = document.getElementById('ultimasNoticias');
+                
+                if (noticias.length === 0) {
+                    container.innerHTML = '<p class="no-noticias">No hay noticias disponibles</p>';
+                    return;
+                }
+
+                const ultimas = noticias.slice(0, 3);
+                container.innerHTML = ultimas.map(noticia => `
+                    <article class="noticia-card">
+                        <div class="noticia-imagen">
+                            <img src="${noticia.imagenes?.[0]?.url || 'https://via.placeholder.com/400x250'}" alt="${noticia.titulo}">
+                        </div>
+                        <div class="noticia-content">
+                            <span class="noticia-fecha">${new Date(noticia.fechaPublicacion).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+                            <h3>${noticia.titulo}</h3>
+                            <p>${noticia.contenido.substring(0, 120)}...</p>
+                            <a href="noticia-detalle.html?id=${noticia.id}" class="btn btn-link">Leer más →</a>
+                        </div>
+                    </article>
+                `).join('');
+            } catch (error) {
+                console.error('Error cargando noticias:', error);
+            }
+        }
+
+        cargarUltimasNoticias();
+    </script>
+</body>
+</html>

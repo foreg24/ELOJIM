@@ -1,0 +1,81 @@
+{
+  "trabajadores": [],
+  "eventos": [
+    {
+      "id": "be805df9-5498-4222-bfd9-59061e3a86e9",
+      "titulo": "Reunion",
+      "fecha": "2026-04-14",
+      "horaInicio": "19:00",
+      "horaFin": "22:00",
+      "descripcion": "Si",
+      "lugar": "Yo",
+      "imagen": null
+    },
+    {
+      "id": "632faf99-7f30-4b90-87b6-84720f5a478a",
+      "titulo": "GG",
+      "fecha": "2026-04-13",
+      "horaInicio": "01:00",
+      "horaFin": "02:01",
+      "descripcion": "GIs",
+      "lugar": "BB",
+      "imagen": null
+    }
+  ],
+  "noticias": [
+    {
+      "id": "53b589be-7061-45dd-ba1c-7cf9dac00840",
+      "slug": "aphelion-flux-destaca-en-la-nasa-space-apps-challenge-neiva-2025-y-alcanza-el-top-10",
+      "titulo": "Aphelion Flux destaca en la NASA Space Apps Challenge Neiva 2025 y alcanza el Top 10",
+      "contenido": "El equipo Aphelion Flux, en colaboración con la fundación Elojim Jadach, se posicionó entre los proyectos más destacados del NASA Space Apps Challenge Neiva 2025, logrando ingresar al Top 10 de ganadores a nivel local.\r\n\r\nEl evento, considerado el hackathon global más grande del mundo, reunió a decenas de equipos en la ciudad de Neiva durante 48 horas de innovación intensiva, con el objetivo de desarrollar soluciones tecnológicas a desafíos reales propuestos por la NASA.\r\n\r\nLa participación de Aphelion Flux se caracterizó por su enfoque interdisciplinario, integrando conocimientos en tecnología, análisis de datos y pensamiento científico. Este logro fue posible gracias al acompañamiento de la fundación Elojim Jadach, que apoyó el desarrollo del proyecto como parte de su compromiso con la educación STEM y la innovación social en la región.\r\n\r\nEl NASA Space Apps Challenge, realizado en Neiva por primera vez en la historia, conectó a la ciudad con más de 160 territorios a nivel mundial, posicionándola como un nuevo epicentro de talento tecnológico en Colombia.",
+      "autores": [
+        "Jesús Forero",
+        "Nicol Oviedo"
+      ],
+      "enlaces": [
+        "https://spaceappsneiva.com/"
+      ],
+      "imagenes": [
+        {
+          "url": "/uploads/1776075654700-60e88a18-3f74-4681-bac6-9b71e3603c45.jpg",
+          "link": null
+        }
+      ],
+      "fechaPublicacion": "2026-04-13T10:20:54.717Z",
+      "publicada": true,
+      "oculta": false
+    },
+    {
+      "id": "9d3efb87-cbb6-4127-928f-20a1ca727f61",
+      "slug": "elojim-jadach-participa-en-el-vi-congreso-internacional-de-astrobiolog-a-en-neiva-2024",
+      "titulo": "Elojim Jadach participa en el VI Congreso Internacional de Astrobiología en Neiva 2024",
+      "contenido": "La fundación Elojim Jadach tuvo una destacada participación en el VI Congreso Internacional de Astrobiología, realizado en la ciudad de Neiva en 2024, consolidando su presencia en escenarios científicos de alto nivel.\r\n\r\nEste congreso reunió a investigadores, estudiantes y organizaciones interesadas en el estudio de la vida en el universo, abordando temas como exploración espacial, condiciones para la vida extraterrestre y avances en ciencias planetarias. La participación de la fundación se centró en promover el acceso al conocimiento científico y fomentar el interés por la astrobiología en jóvenes de la región.\r\n\r\nLa realización de este tipo de eventos en Neiva refleja el crecimiento del ecosistema científico local, impulsado por iniciativas académicas y organizaciones comprometidas con la divulgación científica y la innovación tecnológica.",
+      "autores": [
+        "Paula Esquivel"
+      ],
+      "enlaces": [],
+      "imagenes": [
+        {
+          "url": "/uploads/1776075727662-29aea50a-be13-48fe-a9f3-00fb844e045c.jpeg",
+          "link": null
+        }
+      ],
+      "fechaPublicacion": "2026-04-13T10:22:07.665Z",
+      "publicada": true,
+      "oculta": false
+    }
+  ],
+  "contactos": [
+    {
+      "id": "25bcb1b5-2384-4d3e-803e-38309dd0960b",
+      "nombre": "Jesús",
+      "email": "jesudavifosa24@gmail.com",
+      "asunto": "HO",
+      "mensaje": "Hols",
+      "fecha": "2026-04-13T08:59:41.756Z",
+      "leido": true,
+      "respondido": false
+    }
+  ],
+  "redes": {}
+}
