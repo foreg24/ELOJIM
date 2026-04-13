@@ -69,8 +69,8 @@
         </header>
 
         <!-- Sidebar -->
-        <aside class="admin-sidebar" id="adminSidebar">
-            <div class="sidebar-header">
+        <aside class="admin-sidebar" id="adminSidebar" style="display: flex; flex-direction: column; height: 100vh; height: 100dvh;">
+            <div class="sidebar-header" style="flex-shrink: 0;">
                 <a href="index.html" class="logo">
                     <img src="logo2.png" alt="Logo">
                     <div class="logo-text">
@@ -86,7 +86,7 @@
                 </button>
             </div>
 
-            <nav class="sidebar-nav">
+            <nav class="sidebar-nav" style="flex: 1; overflow-y: auto;">
                 <button class="nav-item active" data-section="dashboard">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <rect x="3" y="3" width="7" height="7"></rect>
@@ -125,8 +125,8 @@
                 </button>
             </nav>
 
-            <div class="sidebar-footer">
-                <button class="logout-btn" onclick="logout()">
+            <div class="sidebar-footer" style="margin-top: auto; flex-shrink: 0;">
+                <button class="logout-btn" onclick="logout()" style="width: 100%; justify-content: center; padding: 1rem;">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                         <polyline points="16 17 21 12 16 7"></polyline>
@@ -280,22 +280,22 @@
                     </button>
                 </div>
 
-                <!-- Filtros -->
-                <div class="filtros-eventos">
+                <!-- Filtros - Solo visibles en modo lista -->
+                <div class="filtros-eventos" id="filtrosEventos" style="display: none;">
                     <button class="filtro-btn active" onclick="filtrarEventos('todos')">Todos</button>
                     <button class="filtro-btn" onclick="filtrarEventos('proximos')">Próximos</button>
                     <button class="filtro-btn" onclick="filtrarEventos('pasados')">Pasados</button>
                 </div>
 
-                <!-- Vista Calendario -->
+                <!-- Vista Calendario Mensual -->
                 <div id="vistaCalendario" class="vista-calendario">
                     <div class="calendario-header">
-                        <button class="btn-nav" onclick="cambiarSemana(-1)">← Semana anterior</button>
-                        <h3 id="rangoSemana">Semana actual</h3>
-                        <button class="btn-nav" onclick="cambiarSemana(1)">Semana siguiente →</button>
+                        <button class="btn-nav" onclick="cambiarMes(-1)">← Mes anterior</button>
+                        <h3 id="rangoMes">Mes actual</h3>
+                        <button class="btn-nav" onclick="cambiarMes(1)">Mes siguiente →</button>
                     </div>
                     
-                    <div class="calendario-semanal" id="calendarioSemanal">
+                    <div class="calendario-mensual" id="calendarioMensual">
                         <!-- Se genera dinámicamente -->
                     </div>
                 </div>
@@ -781,7 +781,7 @@
         }
 
         // ==================== CALENDARIO ====================
-        let semanaActual = new Date();
+        let mesActual = new Date();
         let vistaCalendarioActual = 'calendario';
         let filtroEventosActual = 'todos';
 
@@ -793,6 +793,9 @@
             document.getElementById('vistaCalendario').style.display = vista === 'calendario' ? 'block' : 'none';
             document.getElementById('vistaLista').style.display = vista === 'lista' ? 'block' : 'none';
             
+            // Mostrar/ocultar filtros según la vista
+            document.getElementById('filtrosEventos').style.display = vista === 'lista' ? 'flex' : 'none';
+            
             cargarEventos();
         }
 
@@ -803,8 +806,8 @@
             cargarEventos();
         }
 
-        function cambiarSemana(direccion) {
-            semanaActual.setDate(semanaActual.getDate() + (direccion * 7));
+        function cambiarMes(direccion) {
+            mesActual.setMonth(mesActual.getMonth() + direccion);
             cargarEventos();
         }
 
@@ -815,16 +818,18 @@
                 });
                 let eventos = await response.json();
 
-                // Filtrar según selección
-                const ahora = new Date();
-                if (filtroEventosActual === 'proximos') {
-                    eventos = eventos.filter(e => new Date(e.fecha) >= ahora);
-                } else if (filtroEventosActual === 'pasados') {
-                    eventos = eventos.filter(e => new Date(e.fecha) < ahora);
+                // Filtrar según selección (solo en vista lista)
+                if (vistaCalendarioActual === 'lista') {
+                    const ahora = new Date();
+                    if (filtroEventosActual === 'proximos') {
+                        eventos = eventos.filter(e => new Date(e.fecha) >= ahora);
+                    } else if (filtroEventosActual === 'pasados') {
+                        eventos = eventos.filter(e => new Date(e.fecha) < ahora);
+                    }
                 }
 
                 if (vistaCalendarioActual === 'calendario') {
-                    renderizarCalendarioSemanal(eventos);
+                    renderizarCalendarioMensual(eventos);
                 } else {
                     renderizarListaEventos(eventos);
                 }
@@ -833,46 +838,50 @@
             }
         }
 
-        function renderizarCalendarioSemanal(eventos) {
-            // Calcular inicio y fin de semana
-            const inicioSemana = new Date(semanaActual);
-            inicioSemana.setDate(inicioSemana.getDate() - inicioSemana.getDay());
-            const finSemana = new Date(inicioSemana);
-            finSemana.setDate(finSemana.getDate() + 6);
-
-            document.getElementById('rangoSemana').textContent = 
-                `${inicioSemana.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })} - ${finSemana.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' })}`;
-
-            const dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-            let html = '';
-
-            for (let i = 0; i < 7; i++) {
-                const fecha = new Date(inicioSemana);
-                fecha.setDate(fecha.getDate() + i);
+        function renderizarCalendarioMensual(eventos) {
+            const año = mesActual.getFullYear();
+            const mes = mesActual.getMonth();
+            
+            const primerDia = new Date(año, mes, 1);
+            const ultimoDia = new Date(año, mes + 1, 0);
+            const primerDiaSemana = primerDia.getDay();
+            
+            const nombresMeses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
+                                  'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+            document.getElementById('rangoMes').textContent = `${nombresMeses[mes]} ${año}`;
+            
+            const diasSemana = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+            let html = '<div class="calendario-grid-mes">';
+            
+            diasSemana.forEach(dia => {
+                html += `<div class="calendario-dia-header">${dia}</div>`;
+            });
+            
+            for (let i = 0; i < primerDiaSemana; i++) {
+                html += '<div class="calendario-dia-vacio"></div>';
+            }
+            
+            const hoy = new Date();
+            for (let dia = 1; dia <= ultimoDia.getDate(); dia++) {
+                const fecha = new Date(año, mes, dia);
                 const fechaStr = fecha.toISOString().split('T')[0];
-                
                 const eventosDia = eventos.filter(e => e.fecha === fechaStr);
-                const esHoy = fecha.toDateString() === new Date().toDateString();
-
+                const esHoy = fecha.toDateString() === hoy.toDateString();
+                const esPasado = fecha < new Date(hoy.setHours(0,0,0,0));
+                
                 html += `
-                    <div class="calendario-dia ${esHoy ? 'hoy' : ''}">
-                        <div class="dia-header">
-                            <span class="dia-nombre">${dias[i]}</span>
-                            <span class="dia-numero">${fecha.getDate()}</span>
-                        </div>
-                        <div class="dia-eventos">
-                            ${eventosDia.map(e => `
-                                <div class="evento-mini" onclick="verEvento('${e.id}')">
-                                    <span class="evento-hora">${e.horaInicio || '--:--'}</span>
-                                    <span class="evento-titulo">${e.titulo}</span>
-                                </div>
-                            `).join('')}
+                    <div class="calendario-dia-mes ${esHoy ? 'hoy' : ''} ${esPasado ? 'pasado' : ''}">
+                        <span class="dia-numero-mes">${dia}</span>
+                        <div class="dia-eventos-mes">
+                            ${eventosDia.slice(0, 3).map(e => `<div class="evento-punto" title="${e.titulo}"></div>`).join('')}
+                            ${eventosDia.length > 3 ? `<div class="evento-mas">+${eventosDia.length - 3}</div>` : ''}
                         </div>
                     </div>
                 `;
             }
-
-            document.getElementById('calendarioSemanal').innerHTML = html;
+            
+            html += '</div>';
+            document.getElementById('calendarioMensual').innerHTML = html;
         }
 
         function renderizarListaEventos(eventos) {
@@ -1052,138 +1061,123 @@
             }
         }
 
-        // También modificar el submit del formulario para manejar edición
-document.getElementById('formNoticia')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const form = e.target;
-    const isEditMode = form.dataset.editMode === 'true';
-    const editId = form.dataset.editId;
-    
-    const formData = new FormData();
-    formData.append('titulo', document.getElementById('noticiaTitulo').value);
-    formData.append('autores', document.getElementById('noticiaAutores').value);
-    formData.append('contenido', document.getElementById('noticiaContenido').value);
-    formData.append('publicada', 'true');
-    
-    // Enlaces
-    const enlaces = document.getElementById('noticiaEnlaces').value.split('\n').filter(e => e.trim());
-    formData.append('enlaces', JSON.stringify(enlaces));
-    
-    // Imágenes nuevas
-    const nuevasImagenes = imagenesNoticia;
-    nuevasImagenes.forEach((file, index) => {
-        formData.append('imagenes', file);
-        const link = document.querySelector(`.imagen-link[data-index="${index}"]`)?.value || '';
-        formData.append(`link_${file.name}`, link);
-    });
-    
-    // Si es edición, mantener imágenes existentes que no se eliminaron
-    if (isEditMode) {
-        const imagenesExistentes = [];
-        document.querySelectorAll('.imagen-preview-item.existing').forEach(item => {
-            const img = item.querySelector('img');
-            const link = item.querySelector('.imagen-link')?.value || '';
-            imagenesExistentes.push({ url: img.src, link });
-        });
-        if (imagenesExistentes.length > 0) {
-            formData.append('imagenesExistentes', JSON.stringify(imagenesExistentes));
-        }
-    }
-
-    try {
-        const url = isEditMode ? `/api/noticias/${editId}` : '/api/noticias';
-        const method = isEditMode ? 'PUT' : 'POST';
-        
-        const response = await fetch(url, {
-            method,
-            headers: { 'Authorization': `Bearer ${authToken}` },
-            body: formData
-        });
-
-        if (response.ok) {
-            // Resetear formulario
-            form.reset();
-            form.dataset.editMode = 'false';
-            form.dataset.editId = '';
-            delete form.dataset.editMode;
-            delete form.dataset.editId;
-            imagenesNoticia = [];
-            document.getElementById('imagenesPreview').innerHTML = '';
+        document.getElementById('formNoticia')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
             
-            // Restaurar texto del botón
-            const submitBtn = form.querySelector('button[type="submit"]');
-            submitBtn.textContent = 'Publicar noticia';
+            const form = e.target;
+            const isEditMode = form.dataset.editMode === 'true';
+            const editId = form.dataset.editId;
             
-            cargarNoticiasAdmin();
-            alert(isEditMode ? 'Noticia actualizada' : 'Noticia publicada');
-        } else {
-            const error = await response.json();
-            alert('Error: ' + (error.error || 'No se pudo guardar'));
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('Error al guardar la noticia');
-    }
-});
+            const formData = new FormData();
+            formData.append('titulo', document.getElementById('noticiaTitulo').value);
+            formData.append('autores', document.getElementById('noticiaAutores').value);
+            formData.append('contenido', document.getElementById('noticiaContenido').value);
+            formData.append('publicada', 'true');
+            
+            const enlaces = document.getElementById('noticiaEnlaces').value.split('\n').filter(e => e.trim());
+            formData.append('enlaces', JSON.stringify(enlaces));
+            
+            const nuevasImagenes = imagenesNoticia;
+            nuevasImagenes.forEach((file, index) => {
+                formData.append('imagenes', file);
+                const link = document.querySelector(`.imagen-link[data-index="${index}"]`)?.value || '';
+                formData.append(`link_${file.name}`, link);
+            });
+            
+            if (isEditMode) {
+                const imagenesExistentes = [];
+                document.querySelectorAll('.imagen-preview-item.existing').forEach(item => {
+                    const img = item.querySelector('img');
+                    const link = item.querySelector('.imagen-link')?.value || '';
+                    imagenesExistentes.push({ url: img.src, link });
+                });
+                if (imagenesExistentes.length > 0) {
+                    formData.append('imagenesExistentes', JSON.stringify(imagenesExistentes));
+                }
+            }
+
+            try {
+                const url = isEditMode ? `/api/noticias/${editId}` : '/api/noticias';
+                const method = isEditMode ? 'PUT' : 'POST';
+                
+                const response = await fetch(url, {
+                    method,
+                    headers: { 'Authorization': `Bearer ${authToken}` },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    form.reset();
+                    form.dataset.editMode = 'false';
+                    form.dataset.editId = '';
+                    delete form.dataset.editMode;
+                    delete form.dataset.editId;
+                    imagenesNoticia = [];
+                    document.getElementById('imagenesPreview').innerHTML = '';
+                    
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    submitBtn.textContent = 'Publicar noticia';
+                    
+                    cargarNoticiasAdmin();
+                    alert(isEditMode ? 'Noticia actualizada' : 'Noticia publicada');
+                } else {
+                    const error = await response.json();
+                    alert('Error: ' + (error.error || 'No se pudo guardar'));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al guardar la noticia');
+            }
+        });
 
         function guardarBorrador() {
-            // Similar a publicar pero con publicada = false
-            // Implementar según necesidad
             alert('Borrador guardado');
         }
 
         async function editarNoticia(id) {
-    try {
-        const response = await fetch('/api/noticias', {
-            headers: { 'Authorization': `Bearer ${authToken}` }
-        });
-        const noticias = await response.json();
-        const noticia = noticias.find(n => n.id === id);
-        
-        if (!noticia) {
-            alert('Noticia no encontrada');
-            return;
+            try {
+                const response = await fetch('/api/noticias', {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                const noticias = await response.json();
+                const noticia = noticias.find(n => n.id === id);
+                
+                if (!noticia) {
+                    alert('Noticia no encontrada');
+                    return;
+                }
+                
+                document.getElementById('noticiaTitulo').value = noticia.titulo;
+                document.getElementById('noticiaAutores').value = Array.isArray(noticia.autores) ? noticia.autores.join(', ') : (noticia.autores || '');
+                document.getElementById('noticiaContenido').value = noticia.contenido;
+                
+                const enlaces = Array.isArray(noticia.enlaces) ? noticia.enlaces : [];
+                document.getElementById('noticiaEnlaces').value = enlaces.join('\n');
+                
+                document.getElementById('formNoticia').dataset.editId = id;
+                document.getElementById('formNoticia').dataset.editMode = 'true';
+                
+                const submitBtn = document.getElementById('formNoticia').querySelector('button[type="submit"]');
+                submitBtn.textContent = 'Actualizar noticia';
+                
+                document.getElementById('formNoticia').scrollIntoView({ behavior: 'smooth' });
+                
+                if (noticia.imagenes && noticia.imagenes.length > 0) {
+                    const previewContainer = document.getElementById('imagenesPreview');
+                    previewContainer.innerHTML = noticia.imagenes.map((img, index) => `
+                        <div class="imagen-preview-item existing" data-existing="true">
+                            <img src="${img.url}" alt="Imagen ${index + 1}">
+                            <input type="url" placeholder="Link opcional" class="imagen-link" value="${img.link || ''}" data-index="${index}">
+                            <button type="button" onclick="this.parentElement.remove()">×</button>
+                        </div>
+                    `).join('');
+                }
+                
+            } catch (error) {
+                console.error('Error cargando noticia:', error);
+                alert('Error al cargar la noticia');
+            }
         }
-        
-        // Llenar el formulario con los datos de la noticia
-        document.getElementById('noticiaTitulo').value = noticia.titulo;
-        document.getElementById('noticiaAutores').value = Array.isArray(noticia.autores) ? noticia.autores.join(', ') : (noticia.autores || '');
-        document.getElementById('noticiaContenido').value = noticia.contenido;
-        
-        // Procesar enlaces
-        const enlaces = Array.isArray(noticia.enlaces) ? noticia.enlaces : [];
-        document.getElementById('noticiaEnlaces').value = enlaces.join('\n');
-        
-        // Guardar ID para saber que es edición
-        document.getElementById('formNoticia').dataset.editId = id;
-        document.getElementById('formNoticia').dataset.editMode = 'true';
-        
-        // Cambiar texto del botón
-        const submitBtn = document.getElementById('formNoticia').querySelector('button[type="submit"]');
-        submitBtn.textContent = 'Actualizar noticia';
-        
-        // Scroll al formulario
-        document.getElementById('formNoticia').scrollIntoView({ behavior: 'smooth' });
-        
-        // Previsualizar imágenes existentes
-        if (noticia.imagenes && noticia.imagenes.length > 0) {
-            const previewContainer = document.getElementById('imagenesPreview');
-            previewContainer.innerHTML = noticia.imagenes.map((img, index) => `
-                <div class="imagen-preview-item existing" data-existing="true">
-                    <img src="${img.url}" alt="Imagen ${index + 1}">
-                    <input type="url" placeholder="Link opcional" class="imagen-link" value="${img.link || ''}" data-index="${index}">
-                    <button type="button" onclick="this.parentElement.remove()">×</button>
-                </div>
-            `).join('');
-        }
-        
-    } catch (error) {
-        console.error('Error cargando noticia:', error);
-        alert('Error al cargar la noticia');
-    }
-}
-
 
         async function toggleOcultarNoticia(id, ocultar) {
             try {
@@ -1275,7 +1269,6 @@ document.getElementById('formNoticia')?.addEventListener('submit', async (e) => 
             currentContactoId = id;
             
             try {
-                // Marcar como leído
                 await fetch(`/api/contactos/${id}/leido`, {
                     method: 'PUT',
                     headers: {
