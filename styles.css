@@ -1000,6 +1000,14 @@ body {
 }
 
 .contacto-info-adicional p {
+    text-decoration: none;
+    color: var(--text-gray);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.contacto-info-adicional a {
+    text-decoration: none;
     color: var(--text-gray);
     font-size: 0.9rem;
     margin-bottom: 0.5rem;

@@ -1052,43 +1052,80 @@
             }
         }
 
-        document.getElementById('formNoticia')?.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const formData = new FormData();
-            formData.append('titulo', document.getElementById('noticiaTitulo').value);
-            formData.append('autores', document.getElementById('noticiaAutores').value);
-            formData.append('contenido', document.getElementById('noticiaContenido').value);
-            formData.append('publicada', 'true');
-            
-            // Enlaces
-            const enlaces = document.getElementById('noticiaEnlaces').value.split('\n').filter(e => e.trim());
-            formData.append('enlaces', JSON.stringify(enlaces));
-            
-            // Imágenes con sus links
-            imagenesNoticia.forEach((file, index) => {
-                formData.append('imagenes', file);
-                const link = document.querySelector(`.imagen-link[data-index="${index}"]`)?.value || '';
-                formData.append(`link_${file.name}`, link);
-            });
-
-            try {
-                const response = await fetch('/api/noticias', {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${authToken}` },
-                    body: formData
-                });
-
-                if (response.ok) {
-                    document.getElementById('formNoticia').reset();
-                    imagenesNoticia = [];
-                    renderizarPreviewImagenes();
-                    cargarNoticiasAdmin();
-                }
-            } catch (error) {
-                console.error('Error:', error);
-            }
+        // También modificar el submit del formulario para manejar edición
+document.getElementById('formNoticia')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const form = e.target;
+    const isEditMode = form.dataset.editMode === 'true';
+    const editId = form.dataset.editId;
+    
+    const formData = new FormData();
+    formData.append('titulo', document.getElementById('noticiaTitulo').value);
+    formData.append('autores', document.getElementById('noticiaAutores').value);
+    formData.append('contenido', document.getElementById('noticiaContenido').value);
+    formData.append('publicada', 'true');
+    
+    // Enlaces
+    const enlaces = document.getElementById('noticiaEnlaces').value.split('\n').filter(e => e.trim());
+    formData.append('enlaces', JSON.stringify(enlaces));
+    
+    // Imágenes nuevas
+    const nuevasImagenes = imagenesNoticia;
+    nuevasImagenes.forEach((file, index) => {
+        formData.append('imagenes', file);
+        const link = document.querySelector(`.imagen-link[data-index="${index}"]`)?.value || '';
+        formData.append(`link_${file.name}`, link);
+    });
+    
+    // Si es edición, mantener imágenes existentes que no se eliminaron
+    if (isEditMode) {
+        const imagenesExistentes = [];
+        document.querySelectorAll('.imagen-preview-item.existing').forEach(item => {
+            const img = item.querySelector('img');
+            const link = item.querySelector('.imagen-link')?.value || '';
+            imagenesExistentes.push({ url: img.src, link });
         });
+        if (imagenesExistentes.length > 0) {
+            formData.append('imagenesExistentes', JSON.stringify(imagenesExistentes));
+        }
+    }
+
+    try {
+        const url = isEditMode ? `/api/noticias/${editId}` : '/api/noticias';
+        const method = isEditMode ? 'PUT' : 'POST';
+        
+        const response = await fetch(url, {
+            method,
+            headers: { 'Authorization': `Bearer ${authToken}` },
+            body: formData
+        });
+
+        if (response.ok) {
+            // Resetear formulario
+            form.reset();
+            form.dataset.editMode = 'false';
+            form.dataset.editId = '';
+            delete form.dataset.editMode;
+            delete form.dataset.editId;
+            imagenesNoticia = [];
+            document.getElementById('imagenesPreview').innerHTML = '';
+            
+            // Restaurar texto del botón
+            const submitBtn = form.querySelector('button[type="submit"]');
+            submitBtn.textContent = 'Publicar noticia';
+            
+            cargarNoticiasAdmin();
+            alert(isEditMode ? 'Noticia actualizada' : 'Noticia publicada');
+        } else {
+            const error = await response.json();
+            alert('Error: ' + (error.error || 'No se pudo guardar'));
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error al guardar la noticia');
+    }
+});
 
         function guardarBorrador() {
             // Similar a publicar pero con publicada = false
@@ -1096,7 +1133,57 @@
             alert('Borrador guardado');
         }
 
+        async function editarNoticia(id) {
+    try {
+        const response = await fetch('/api/noticias', {
+            headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+        const noticias = await response.json();
+        const noticia = noticias.find(n => n.id === id);
         
+        if (!noticia) {
+            alert('Noticia no encontrada');
+            return;
+        }
+        
+        // Llenar el formulario con los datos de la noticia
+        document.getElementById('noticiaTitulo').value = noticia.titulo;
+        document.getElementById('noticiaAutores').value = Array.isArray(noticia.autores) ? noticia.autores.join(', ') : (noticia.autores || '');
+        document.getElementById('noticiaContenido').value = noticia.contenido;
+        
+        // Procesar enlaces
+        const enlaces = Array.isArray(noticia.enlaces) ? noticia.enlaces : [];
+        document.getElementById('noticiaEnlaces').value = enlaces.join('\n');
+        
+        // Guardar ID para saber que es edición
+        document.getElementById('formNoticia').dataset.editId = id;
+        document.getElementById('formNoticia').dataset.editMode = 'true';
+        
+        // Cambiar texto del botón
+        const submitBtn = document.getElementById('formNoticia').querySelector('button[type="submit"]');
+        submitBtn.textContent = 'Actualizar noticia';
+        
+        // Scroll al formulario
+        document.getElementById('formNoticia').scrollIntoView({ behavior: 'smooth' });
+        
+        // Previsualizar imágenes existentes
+        if (noticia.imagenes && noticia.imagenes.length > 0) {
+            const previewContainer = document.getElementById('imagenesPreview');
+            previewContainer.innerHTML = noticia.imagenes.map((img, index) => `
+                <div class="imagen-preview-item existing" data-existing="true">
+                    <img src="${img.url}" alt="Imagen ${index + 1}">
+                    <input type="url" placeholder="Link opcional" class="imagen-link" value="${img.link || ''}" data-index="${index}">
+                    <button type="button" onclick="this.parentElement.remove()">×</button>
+                </div>
+            `).join('');
+        }
+        
+    } catch (error) {
+        console.error('Error cargando noticia:', error);
+        alert('Error al cargar la noticia');
+    }
+}
+
 
         async function toggleOcultarNoticia(id, ocultar) {
             try {
