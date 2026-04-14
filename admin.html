@@ -407,6 +407,22 @@
 
     <!-- Modales -->
     
+    <div class="modal" id="modalEventoDetalle">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Detalles del Evento</h3>
+            <button class="modal-close" onclick="cerrarModal('modalEventoDetalle')">×</button>
+        </div>
+        <div class="modal-body" id="contenidoEventoDetalle" style="padding: 1.5rem;">
+            <!-- Se carga dinámicamente -->
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="cerrarModal('modalEventoDetalle')">Cerrar</button>
+            <button type="button" class="btn btn-primary" id="btnEditarDesdeDetalle">Editar</button>
+        </div>
+    </div>
+</div>
+
     <!-- Modal Evento -->
     <div class="modal" id="modalEvento">
         <div class="modal-content">
@@ -927,6 +943,7 @@
         }
 
         function verEvento(id) {
+            verDetallesEvento(id);
             editarEvento(id);
         }
 
