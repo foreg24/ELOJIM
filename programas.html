@@ -7,347 +7,6 @@
     <title>Programas - Fundación Elojim Jadach</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        .programas-page {
-            padding: 8rem 0 4rem;
-            background-color: var(--bg-light);
-            min-height: 100vh;
-        }
-
-        .programas-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .programas-header h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .programas-header p {
-            color: var(--text-gray);
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .programas-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .programa-card {
-            background: white;
-            border-radius: 16px;
-            padding: 2rem 1.5rem;
-            text-align: center;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border-light);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .programa-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-xl);
-        }
-
-        .programa-icon {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .programa-card:hover .programa-icon {
-            transform: scale(1.1);
-        }
-
-        .programa-icon svg {
-            width: 40px;
-            height: 40px;
-        }
-
-        /* Iconos con colores específicos */
-        .icon-pink {
-            background-color: #fce7f3;
-            color: #ec4899;
-        }
-
-        .programa-card:hover .icon-pink {
-            background-color: #ec4899;
-            color: white;
-        }
-
-        .icon-orange {
-            background-color: #ffedd5;
-            color: #f97316;
-        }
-
-        .programa-card:hover .icon-orange {
-            background-color: #f97316;
-            color: white;
-        }
-
-        .icon-blue {
-            background-color: #dbeafe;
-            color: #2563eb;
-        }
-
-        .programa-card:hover .icon-blue {
-            background-color: #2563eb;
-            color: white;
-        }
-
-        .icon-green {
-            background-color: #dcfce7;
-            color: #16a34a;
-        }
-
-        .programa-card:hover .icon-green {
-            background-color: #16a34a;
-            color: white;
-        }
-
-        .icon-purple {
-            background-color: #f3e8ff;
-            color: #9333ea;
-        }
-
-        .programa-card:hover .icon-purple {
-            background-color: #9333ea;
-            color: white;
-        }
-
-        .icon-yellow {
-            background-color: #fef9c3;
-            color: #ca8a04;
-        }
-
-        .programa-card:hover .icon-yellow {
-            background-color: #ca8a04;
-            color: white;
-        }
-
-        .icon-cyan {
-            background-color: #cffafe;
-            color: #0891b2;
-        }
-
-        .programa-card:hover .icon-cyan {
-            background-color: #0891b2;
-            color: white;
-        }
-
-        .icon-red {
-            background-color: #fee2e2;
-            color: #dc2626;
-        }
-
-        .programa-card:hover .icon-red {
-            background-color: #dc2626;
-            color: white;
-        }
-
-        .programa-card h3 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 0.75rem;
-            line-height: 1.4;
-        }
-
-        .programa-card p {
-            font-size: 0.9rem;
-            color: var(--text-gray);
-            line-height: 1.6;
-        }
-
-        /* Modal */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: 300;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .modal-overlay.active {
-            display: block;
-            opacity: 1;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.9);
-            z-index: 400;
-            width: 90%;
-            max-width: 600px;
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .modal.active {
-            display: block;
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            overflow: hidden;
-        }
-
-        .modal-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid var(--border-light);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: linear-gradient(135deg, var(--primary) 0%, #1d4ed8 100%);
-            color: white;
-        }
-
-        .modal-header h3 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin: 0;
-        }
-
-        .modal-close {
-            width: 32px;
-            height: 32px;
-            border: none;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            transition: all 0.2s;
-        }
-
-        .modal-close:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .modal-body {
-            padding: 2rem;
-        }
-
-        .modal-icon-large {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
-        }
-
-        .modal-icon-large svg {
-            width: 50px;
-            height: 50px;
-        }
-
-        .modal-resumen {
-            font-size: 1rem;
-            line-height: 1.8;
-            color: var(--text-dark);
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-
-        .modal-footer {
-            padding: 1.5rem;
-            border-top: 1px solid var(--border-light);
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            background: var(--bg-light);
-        }
-
-        .btn-descargar {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.875rem 2rem;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 1rem;
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
-        }
-
-        .btn-descargar:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
-        }
-
-        .btn-descargar svg {
-            width: 20px;
-            height: 20px;
-        }
-
-        .btn-cerrar {
-            padding: 0.875rem 1.5rem;
-            background: white;
-            color: var(--text-gray);
-            border: 1px solid var(--border-light);
-            border-radius: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-cerrar:hover {
-            background: var(--bg-light);
-            color: var(--text-dark);
-        }
-
-        @media (max-width: 1024px) {
-            .programas-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 640px) {
-            .programas-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .programas-header h1 {
-                font-size: 2rem;
-            }
-        }
-    </style>
 </head>
 <body>
     <!-- Header -->
@@ -361,7 +20,6 @@
                         <span class="logo-sub">Jadach</span>
                     </div>
                 </a>
-                
                 <ul class="nav-links desktop-menu">
                     <li><a href="index.html">Inicio</a></li>
                     <li><a href="nosotros.html">Nosotros</a></li>
@@ -369,14 +27,12 @@
                     <li><a href="noticias.html">Noticias</a></li>
                     <li><a href="contacto.html">Contáctanos</a></li>
                 </ul>
-
                 <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
                     <span class="hamburger-line"></span>
                     <span class="hamburger-line"></span>
                     <span class="hamburger-line"></span>
                 </button>
             </nav>
-
             <div class="mobile-menu" id="mobileMenu">
                 <div class="mobile-menu-header">
                     <a href="index.html" class="logo">
@@ -404,17 +60,14 @@
         </div>
     </header>
 
-    <!-- Programas Section -->
+    <!-- Programas -->
     <section class="programas-page">
         <div class="container">
             <div class="programas-header">
                 <h1>Nuestros programas sociales</h1>
                 <p>Explora nuestros programas sociales y únete a las iniciativas que están transformando vidas en nuestra comunidad.</p>
             </div>
-
-            <div class="programas-grid" id="programasGrid">
-                <!-- Los programas se generan con JavaScript -->
-            </div>
+            <div class="programas-grid" id="programasGrid"></div>
         </div>
     </section>
 
@@ -427,8 +80,31 @@
                 <button class="modal-close" onclick="cerrarModal()">×</button>
             </div>
             <div class="modal-body">
-                <div class="modal-icon-large" id="modalIcono"></div>
-                <p class="modal-resumen" id="modalResumen"></p>
+                <div class="modal-top">
+                    <div class="modal-icon-large" id="modalIcono"></div>
+                    <p class="modal-resumen" id="modalResumen"></p>
+                </div>
+                <!-- Vista previa PDF -->
+                <div class="preview-section">
+                    <div class="preview-label">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
+                        </svg>
+                        Vista previa del material
+                    </div>
+                    <div class="preview-viewer" id="previewViewer"></div>
+                    <div class="preview-controls" id="previewControls" style="display:none">
+                        <span id="previewInfo"></span>
+                        <div class="preview-nav-btns">
+                            <button class="preview-nav-btn" id="prevSlide" title="Anterior">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                            </button>
+                            <button class="preview-nav-btn" id="nextSlide" title="Siguiente">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <a href="#" class="btn-descargar" id="modalDescargar" download>
@@ -502,143 +178,144 @@
     <script>
         // Mobile menu
         const hamburgerBtn = document.getElementById('hamburgerBtn');
-        const closeBtn = document.getElementById('closeBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
+        const closeBtn     = document.getElementById('closeBtn');
+        const mobileMenu   = document.getElementById('mobileMenu');
 
-        hamburgerBtn?.addEventListener('click', () => {
-            mobileMenu.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        });
+        hamburgerBtn?.addEventListener('click', () => { mobileMenu.classList.add('active'); document.body.style.overflow = 'hidden'; });
+        closeBtn?.addEventListener('click',     () => { mobileMenu.classList.remove('active'); document.body.style.overflow = ''; });
 
-        closeBtn?.addEventListener('click', () => {
-            mobileMenu.classList.remove('active');
-            document.body.style.overflow = '';
-        });
-
-        // Datos de los 8 programas
+        // ── Datos ──
+        // Todos los archivos son PDF. Si tienes una URL de embed de Google Drive
+        // o Google Slides, ponla en previewUrl; si no, déjala en null y se mostrará
+        // el visor nativo del navegador para el PDF local.
         const programas = [
             {
-                id: 1,
-                titulo: "Empoderamiento Femenino",
+                id: 1, titulo: "Empoderamiento Femenino",
                 resumen: "Capacitación y emprendimiento para mujeres vulnerables. Ofrecemos formación en oficios, microcréditos, acompañamiento psicosocial y redes de apoyo comunitario para fortalecer la autonomía económica y personal de las participantes.",
-                archivo: "programas/1 empoderamiento femenino FEJ.pptx",
-                icono: "mujer",
-                color: "pink"
+                archivo: "programas/1 empoderamiento femenino FEJ.pdf",
+                icono: "mujer", color: "pink", previewUrl: null
             },
             {
-                id: 2,
-                titulo: "Fábrica de Proyectos",
+                id: 2, titulo: "Fábrica de Proyectos",
                 resumen: "Gestión y evaluación de proyectos con enfoque sostenible. Integra profesionales multidisciplinarios que diseñan, planifican y ejecutan iniciativas alineadas con los Objetivos de Desarrollo Sostenible y la Agenda 2030.",
-                archivo: "programas/2. Fabrica de proyectos.pptx",
-                icono: "proyecto",
-                color: "orange"
+                archivo: "programas/2. Fabrica de proyectos.pdf",
+                icono: "proyecto", color: "orange", previewUrl: null
             },
             {
-                id: 3,
-                titulo: "Factoría de Software",
+                id: 3, titulo: "Factoría de Software",
                 resumen: "Desarrollo tecnológico especializado en soluciones de software a medida. Creamos aplicaciones web, móviles y multiplataforma con enfoque en transformación digital, automatización de procesos e integración de tecnologías IoT.",
-                archivo: "programas/3 Factoria de Software.pdf.pptx",
-                icono: "codigo",
-                color: "blue"
+                archivo: "programas/3 Factoria de Software.pdf.pdf",
+                icono: "codigo", color: "blue", previewUrl: null
             },
             {
-                id: 4,
-                titulo: "Economía Plateada",
+                id: 4, titulo: "Economía Plateada",
                 resumen: "Impulsa iniciativas turísticas a través de la inclusión de personas mayores de 60 años. Desarrolla emprendimientos locales en turismo rural, gastronomía autóctona y narración de historias que fortalecen la identidad cultural.",
-                archivo: "programas/4 Economia plateada.pptx",
-                icono: "turismo",
-                color: "green"
+                archivo: "programas/4 Economia plateada.pdf",
+                icono: "turismo", color: "green", previewUrl: null
             },
             {
-                id: 5,
-                titulo: "Seguridad Alimentaria",
+                id: 5, titulo: "Seguridad Alimentaria",
                 resumen: "Programa integral para agricultores que mejora producción, capacitación y comercialización. Optimiza procesos con hardware y software especializado, incluyendo sensores, drones y sistemas inteligentes de riego.",
-                archivo: "programas/5 Seguridad alimentaria.pptx",
-                icono: "agricultura",
-                color: "purple"
+                archivo: "programas/5 Seguridad alimentaria.pdf",
+                icono: "agricultura", color: "purple", previewUrl: null
             },
             {
-                id: 6,
-                titulo: "Transformar con STEAM+",
+                id: 6, titulo: "Transformar con STEAM+",
                 resumen: "Programa integral para niños y jóvenes que desarrolla habilidades del siglo XXI. Integra Ciencia, Tecnología, Ingeniería, Artes, Matemáticas y Humanidades mediante aprendizaje basado en proyectos y tutorías personalizadas.",
-                archivo: "programas/6 Transformar con STEAM+.pptx",
-                icono: "educacion",
-                color: "yellow"
+                archivo: "programas/6 Transformar con STEAM+.pdf",
+                icono: "educacion", color: "yellow", previewUrl: null
             },
             {
-                id: 7,
-                titulo: "Cultura, Creatividad e Inclusión",
+                id: 7, titulo: "Cultura, Creatividad e Inclusión",
                 resumen: "Desarrollo cultural a través de las artes contribuyendo a los ODS. Fortalece habilidades blandas esenciales, promueve la inclusión y la creatividad mediante radio comunitaria, expresión artística y participación cultural.",
-                archivo: "programas/7 Cultura creatividad e inclusión.pptx",
-                icono: "arte",
-                color: "cyan"
+                archivo: "programas/7 Cultura  creatividad e inclusión.pdf",
+                icono: "arte", color: "cyan", previewUrl: null
             },
             {
-                id: 8,
-                titulo: "Semillero de Innovación",
+                id: 8, titulo: "Semillero de Innovación",
                 resumen: "Espacio para jóvenes de 15 años en adelante que buscan desarrollar habilidades creativas y pensamiento crítico. Se enfoca en soluciones innovadoras con impacto social, orientado al emprendimiento y la formulación de proyectos.",
                 archivo: "programas/8 Semillero de Innovación y Emprendimiento.pdf",
-                icono: "innovacion",
-                color: "red"
+                icono: "innovacion", color: "red", previewUrl: null
             }
         ];
 
-        // Iconos SVG
         const iconos = {
-            mujer: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 1 3 3 3 3 0 0 1-3 3 3 3 0 0 1-3-3 3 3 0 0 1 3-3m0 14c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4m-4-8a4 4 0 0 1 4-4 4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4m4 10c2.21 0 4-1.79 4-4h-8c0 2.21 1.79 4 4 4z"/></svg>',
-            proyecto: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path><line x1="12" y1="11" x2="12" y2="17"></line><line x1="9" y1="14" x2="15" y2="14"></line></svg>',
-            codigo: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>',
-            turismo: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>',
-            agricultura: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><path d="M12 6v6l4 2"/></svg>',
-            educacion: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 14l9-5-9-5-9 5 9 5z"></path><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path></svg>',
-            arte: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>',
+            mujer:      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 1 3 3 3 3 0 0 1-3 3 3 3 0 0 1-3-3 3 3 0 0 1 3-3m0 14c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4m-4-8a4 4 0 0 1 4-4 4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4m4 10c2.21 0 4-1.79 4-4h-8c0 2.21 1.79 4 4 4z"/></svg>',
+            proyecto:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path><line x1="12" y1="11" x2="12" y2="17"></line><line x1="9" y1="14" x2="15" y2="14"></line></svg>',
+            codigo:     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>',
+            turismo:    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>',
+            agricultura:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><path d="M12 6v6l4 2"/></svg>',
+            educacion:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 14l9-5-9-5-9 5 9 5z"></path><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path></svg>',
+            arte:       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>',
             innovacion: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>'
         };
 
-        // Generar cards
         function renderizarProgramas() {
-            const grid = document.getElementById('programasGrid');
-            
-            grid.innerHTML = programas.map(p => `
+            document.getElementById('programasGrid').innerHTML = programas.map(p => `
                 <div class="programa-card" onclick="abrirModal(${p.id})">
-                    <div class="programa-icon icon-${p.color}">
-                        ${iconos[p.icono]}
-                    </div>
+                    <div class="programa-icon icon-${p.color}">${iconos[p.icono]}</div>
                     <h3>${p.titulo}</h3>
                     <p>${p.resumen.substring(0, 80)}...</p>
-                </div>
-            `).join('');
+                </div>`).join('');
         }
 
-        // Abrir modal
+        function construirPreview(programa) {
+            const viewer   = document.getElementById('previewViewer');
+            const controls = document.getElementById('previewControls');
+            const info     = document.getElementById('previewInfo');
+            controls.style.display = 'none';
+
+            // 1) URL embed explícita (Google Slides / Drive)
+            if (programa.previewUrl) {
+                viewer.innerHTML = `<iframe src="${programa.previewUrl}" allowfullscreen loading="lazy"></iframe>`;
+                info.textContent = 'Navega con las flechas de las diapositivas';
+                controls.style.display = 'flex';
+                document.getElementById('prevSlide').onclick = () => viewer.querySelector('iframe')?.contentWindow?.postMessage('previousSlide', '*');
+                document.getElementById('nextSlide').onclick = () => viewer.querySelector('iframe')?.contentWindow?.postMessage('nextSlide', '*');
+                return;
+            }
+
+            // 2) PDF local → visor nativo del navegador
+            viewer.innerHTML = `
+                <object data="${programa.archivo}#toolbar=0&navpanes=0&scrollbar=0&view=FitH"
+                        type="application/pdf" width="100%" height="100%">
+                    <div class="preview-placeholder">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        <p>Tu navegador no puede mostrar el PDF aquí.</p>
+                        <small>Descárgalo para verlo.</small>
+                    </div>
+                </object>`;
+            info.textContent = 'Desplázate para ver todas las páginas';
+            controls.style.display = 'flex';
+            document.getElementById('prevSlide').style.display = 'none';
+            document.getElementById('nextSlide').style.display = 'none';
+        }
+
         function abrirModal(id) {
-            const programa = programas.find(p => p.id === id);
-            if (!programa) return;
-            
-            document.getElementById('modalTitulo').textContent = programa.titulo;
-            document.getElementById('modalResumen').textContent = programa.resumen;
-            document.getElementById('modalIcono').className = `modal-icon-large icon-${programa.color}`;
-            document.getElementById('modalIcono').innerHTML = iconos[programa.icono];
-            document.getElementById('modalDescargar').href = programa.archivo;
-            
+            const p = programas.find(x => x.id === id);
+            if (!p) return;
+            document.getElementById('modalTitulo').textContent    = p.titulo;
+            document.getElementById('modalResumen').textContent   = p.resumen;
+            document.getElementById('modalIcono').className       = `modal-icon-large icon-${p.color}`;
+            document.getElementById('modalIcono').innerHTML       = iconos[p.icono];
+            document.getElementById('modalDescargar').href        = p.archivo;
+            construirPreview(p);
             document.getElementById('modalOverlay').classList.add('active');
             document.getElementById('programaModal').classList.add('active');
             document.body.style.overflow = 'hidden';
         }
 
-        // Cerrar modal
         function cerrarModal() {
             document.getElementById('modalOverlay').classList.remove('active');
             document.getElementById('programaModal').classList.remove('active');
             document.body.style.overflow = '';
+            document.getElementById('previewViewer').innerHTML = '';
         }
 
-        // Cerrar con ESC
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') cerrarModal();
-        });
-
-        // Inicializar
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarModal(); });
         renderizarProgramas();
     </script>
 </body>
