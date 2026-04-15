@@ -1,5 +1,30 @@
 {
-  "trabajadores": [],
+  "trabajadores": [
+    {
+      "id": "709123ba-4b9d-4e79-99fe-013e00d46d77",
+      "nombre": "Gina Sánchez",
+      "rol": "Importante",
+      "email": "jota0806@hotmail.com"
+    },
+    {
+      "id": "2ec6e8fb-857f-4ac7-bd20-29642725c1f4",
+      "nombre": "Jesús Forero",
+      "rol": "Voluntario",
+      "email": "jesudavifosa24@gmail.com"
+    },
+    {
+      "id": "dec4e507-fa75-44ff-a7b4-ad4e4c82c967",
+      "nombre": "Nicol Oviedo",
+      "rol": "Voluntario",
+      "email": "nidaovsa16@gmail.com"
+    },
+    {
+      "id": "c1d1f55e-ec19-4f57-b13a-7e618f8ddb9e",
+      "nombre": "Paula Sánchez",
+      "rol": "Voluntario",
+      "email": "estrellita04@gmail.com"
+    }
+  ],
   "eventos": [
     {
       "id": "be805df9-5498-4222-bfd9-59061e3a86e9",
@@ -19,6 +44,27 @@
       "horaFin": "02:01",
       "descripcion": "GIs",
       "lugar": "BB",
+      "imagen": null
+    },
+    {
+      "id": "3bad8b7f-8503-4990-957e-190476625fe1",
+      "titulo": "EVENTOGG",
+      "fecha": "2026-04-20",
+      "horaInicio": "17:56",
+      "horaFin": "18:57",
+      "descripcion": "Trabajo",
+      "lugar": "Usco",
+      "imagen": "/uploads/1776275852208-921ad949-df82-47a8-b6cf-2effd81baad2.png"
+    },
+    {
+      "id": "35e88e72-b259-4a4d-8e6b-4ace03713cf6",
+      "titulo": "OTROGG",
+      "fecha": "2026-04-20",
+      "todoElDia": "true",
+      "horaInicio": "",
+      "horaFin": "",
+      "descripcion": "PQSI",
+      "lugar": "Usco2",
       "imagen": null
     }
   ],
@@ -60,9 +106,10 @@
           "link": null
         }
       ],
-      "fechaPublicacion": "2026-04-13T10:22:07.665Z",
-      "publicada": true,
-      "oculta": false
+      "fechaPublicacion": "2026-04-13T15:22",
+      "publicada": "true",
+      "oculta": false,
+      "imagenesExistentes": "[{\"url\":\"http://localhost:3000/uploads/1776075727662-29aea50a-be13-48fe-a9f3-00fb844e045c.jpeg\",\"link\":\"\"}]"
     }
   ],
   "contactos": [
@@ -73,6 +120,16 @@
       "asunto": "HO",
       "mensaje": "Hols",
       "fecha": "2026-04-13T08:59:41.756Z",
+      "leido": true,
+      "respondido": false
+    },
+    {
+      "id": "b34d86d6-e4eb-41fe-8b07-dfbc3df6223f",
+      "nombre": "YOU",
+      "email": "hola@bye.es",
+      "asunto": "HELLO",
+      "mensaje": "Adios",
+      "fecha": "2026-04-15T17:54:52.109Z",
       "leido": true,
       "respondido": false
     }

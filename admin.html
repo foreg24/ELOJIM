@@ -6,7 +6,7 @@
     <link rel="icon" href="logo.png" type="image/png">
     <title>Panel de Administración - Fundación Elojim Jadach</title>
     <link rel="stylesheet" href="admin-styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Login Screen -->
@@ -207,7 +207,13 @@
                 <!-- Redes Sociales -->
                 <div class="admin-section-card">
                     <h2>Redes Sociales - Credenciales</h2>
-                    <p class="section-desc">Gestiona los enlaces y credenciales de acceso a las redes sociales</p>
+                    <p class="section-desc"><strong> Instagram </strong>- Usuario: @elojim.jadach - Contraseña: elojim.jadach25</p>
+                    <p class="section-desc"></p>
+                    <p class="section-desc"><strong>Tiktok - </strong>Usuario: @elojim.jadach - Contraseña: elojim.jadach25</p>
+                    <p class="section-desc"></p>
+                    <p class="section-desc"><strong>X (Formerly Twitter) </strong>- Usuario: @ElojimJadach - Contraseña: elojim.jadach25</p>
+                    <p class="section-desc"></p>
+                    <p class="section-desc"><strong>Facebook </strong>- Usuario: elojimjadach - Contraseña: elojim.jadach25</p>
                     
                     <div class="redes-admin" id="redesAdmin">
                         <!-- Se carga dinámicamente -->
@@ -332,6 +338,13 @@
                             </div>
                         </div>
                         
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="noticiaFechaPublicacion">Fecha de publicación *</label>
+                                <input type="datetime-local" id="noticiaFechaPublicacion" required>
+                            </div>
+                        </div>
+                        
                         <div class="form-group">
                             <label for="noticiaContenido">Contenido *</label>
                             <textarea id="noticiaContenido" rows="8" required placeholder="Escribe el contenido completo de la noticia..."></textarea>
@@ -407,21 +420,22 @@
 
     <!-- Modales -->
     
+    <!-- Modal Detalle Evento -->
     <div class="modal" id="modalEventoDetalle">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3>Detalles del Evento</h3>
-            <button class="modal-close" onclick="cerrarModal('modalEventoDetalle')">×</button>
-        </div>
-        <div class="modal-body" id="contenidoEventoDetalle" style="padding: 1.5rem;">
-            <!-- Se carga dinámicamente -->
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" onclick="cerrarModal('modalEventoDetalle')">Cerrar</button>
-            <button type="button" class="btn btn-primary" id="btnEditarDesdeDetalle">Editar</button>
+        <div class="modal-content modal-detalle-evento">
+            <div class="modal-header">
+                <h3 id="detalleEventoTitulo">Detalles del Evento</h3>
+                <button class="modal-close" onclick="cerrarModal('modalEventoDetalle')">×</button>
+            </div>
+            <div class="modal-body" id="contenidoEventoDetalle">
+                <!-- Se carga dinámicamente -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="cerrarModal('modalEventoDetalle')">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="btnEditarDesdeDetalle">Editar</button>
+            </div>
         </div>
     </div>
-</div>
 
     <!-- Modal Evento -->
     <div class="modal" id="modalEvento">
@@ -441,6 +455,15 @@
                         <label for="eventoFecha">Fecha *</label>
                         <input type="date" id="eventoFecha" required>
                     </div>
+                </div>
+                <div class="form-group checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="eventoTodoElDia" onchange="toggleTodoElDia()">
+                        <span class="checkmark"></span>
+                        <span class="label-text">Todo el día</span>
+                    </label>
+                </div>
+                <div class="form-row" id="horasEvento">
                     <div class="form-group">
                         <label for="eventoHoraInicio">Hora inicio</label>
                         <input type="time" id="eventoHoraInicio">
@@ -456,17 +479,29 @@
                 </div>
                 <div class="form-group">
                     <label for="eventoLugar">Lugar</label>
-                    <input type="text" id="eventoLugar">
-                </div>
-                <div class="form-group">
-                    <label for="eventoImagen">Imagen</label>
-                    <input type="file" id="eventoImagen" accept="image/*">
+                    <input type="text" id="eventoLugar" placeholder="Ubicación del evento">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" onclick="cerrarModal('modalEvento')">Cancelar</button>
                     <button type="submit" class="btn btn-primary">Guardar evento</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Modal Lista Eventos del Día -->
+    <div class="modal" id="modalEventosDia">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="tituloEventosDia">Eventos del día</h3>
+                <button class="modal-close" onclick="cerrarModal('modalEventosDia')">×</button>
+            </div>
+            <div class="modal-body" id="contenidoEventosDia" style="padding: 0;">
+                <!-- Se carga dinámicamente -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="cerrarModal('modalEventosDia')">Cerrar</button>
+            </div>
         </div>
     </div>
 
@@ -523,6 +558,8 @@
         // ==================== AUTH ====================
         let authToken = localStorage.getItem('elojim_token');
         let currentContactoId = null;
+        let eventosCache = [];
+        let fechaActualModal = null;
 
         // Verificar sesión al cargar
         if (authToken) {
@@ -733,7 +770,6 @@
             document.getElementById('trabajadorId').value = id || '';
             
             if (id) {
-                // Cargar datos para editar
                 fetch(`/api/trabajadores`, { headers: { 'Authorization': `Bearer ${authToken}` } })
                     .then(r => r.json())
                     .then(data => {
@@ -809,7 +845,6 @@
             document.getElementById('vistaCalendario').style.display = vista === 'calendario' ? 'block' : 'none';
             document.getElementById('vistaLista').style.display = vista === 'lista' ? 'block' : 'none';
             
-            // Mostrar/ocultar filtros según la vista
             document.getElementById('filtrosEventos').style.display = vista === 'lista' ? 'flex' : 'none';
             
             cargarEventos();
@@ -833,8 +868,9 @@
                     headers: { 'Authorization': `Bearer ${authToken}` }
                 });
                 let eventos = await response.json();
+                
+                eventosCache = eventos;
 
-                // Filtrar según selección (solo en vista lista)
                 if (vistaCalendarioActual === 'lista') {
                     const ahora = new Date();
                     if (filtroEventosActual === 'proximos') {
@@ -842,6 +878,7 @@
                     } else if (filtroEventosActual === 'pasados') {
                         eventos = eventos.filter(e => new Date(e.fecha) < ahora);
                     }
+                    eventos.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
                 }
 
                 if (vistaCalendarioActual === 'calendario') {
@@ -885,12 +922,23 @@
                 const esHoy = fecha.toDateString() === hoy.toDateString();
                 const esPasado = fecha < new Date(hoy.setHours(0,0,0,0));
                 
+                let eventosHtml = '';
+                if (eventosDia.length > 0) {
+                    eventosHtml = eventosDia.slice(0, 3).map(e => `
+                        <div class="evento-nombre-mini" onclick="event.stopPropagation(); verDetalleEvento('${e.id}')" title="${e.titulo}">
+                            ${e.titulo}
+                        </div>
+                    `).join('');
+                    if (eventosDia.length > 3) {
+                        eventosHtml += `<div class="evento-mas" onclick="event.stopPropagation(); mostrarEventosDia('${fechaStr}')">+${eventosDia.length - 3} más</div>`;
+                    }
+                }
+                
                 html += `
-                    <div class="calendario-dia-mes ${esHoy ? 'hoy' : ''} ${esPasado ? 'pasado' : ''}">
+                    <div class="calendario-dia-mes ${esHoy ? 'hoy' : ''} ${esPasado ? 'pasado' : ''}" ${eventosDia.length > 0 && eventosDia.length <= 3 ? `onclick="mostrarEventosDia('${fechaStr}')"` : ''}>
                         <span class="dia-numero-mes">${dia}</span>
-                        <div class="dia-eventos-mes">
-                            ${eventosDia.slice(0, 3).map(e => `<div class="evento-punto" title="${e.titulo}"></div>`).join('')}
-                            ${eventosDia.length > 3 ? `<div class="evento-mas">+${eventosDia.length - 3}</div>` : ''}
+                        <div class="dia-eventos-mes-nombres">
+                            ${eventosHtml}
                         </div>
                     </div>
                 `;
@@ -913,7 +961,7 @@
                 const esPasado = fecha < new Date();
                 
                 return `
-                    <div class="evento-lista-item ${esPasado ? 'pasado' : ''}">
+                    <div class="evento-lista-item ${esPasado ? 'pasado' : ''}" onclick="verDetalleEvento('${e.id}')">
                         <div class="evento-fecha">
                             <span class="mes">${fecha.toLocaleDateString('es-ES', { month: 'short' })}</span>
                             <span class="dia">${fecha.getDate()}</span>
@@ -922,11 +970,11 @@
                             <h4>${e.titulo}</h4>
                             <p>${e.descripcion || 'Sin descripción'}</p>
                             <span class="evento-meta">
-                                ${e.horaInicio ? `🕐 ${e.horaInicio}${e.horaFin ? ` - ${e.horaFin}` : ''}` : ''}
+                                ${e.todoElDia ? '📅 Todo el día' : (e.horaInicio ? `🕐 ${e.horaInicio}${e.horaFin ? ` - ${e.horaFin}` : ''}` : '')}
                                 ${e.lugar ? `📍 ${e.lugar}` : ''}
                             </span>
                         </div>
-                        <div class="evento-acciones">
+                        <div class="evento-acciones" onclick="event.stopPropagation()">
                             <button class="btn-icon" onclick="editarEvento('${e.id}')">✏️</button>
                             <button class="btn-icon btn-danger" onclick="eliminarEvento('${e.id}')">🗑️</button>
                         </div>
@@ -935,16 +983,103 @@
             }).join('');
         }
 
+        function mostrarEventosDia(fechaStr) {
+            fechaActualModal = fechaStr;
+            const eventosDia = eventosCache.filter(e => e.fecha === fechaStr);
+            if (eventosDia.length === 0) return;
+            
+            if (eventosDia.length === 1) {
+                verDetalleEvento(eventosDia[0].id);
+                return;
+            }
+            
+            const fecha = new Date(fechaStr);
+            const opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            
+            const html = eventosDia.map(e => `
+                <div class="evento-dia-lista-item" onclick="cerrarModal('modalEventosDia'); setTimeout(() => verDetalleEvento('${e.id}'), 300);">
+                    <div class="evento-dia-hora">
+                        ${e.todoElDia ? '<span class="badge-todo-el-dia">Todo el día</span>' : (e.horaInicio || '--:--')}
+                    </div>
+                    <div class="evento-dia-info">
+                        <h4>${e.titulo}</h4>
+                        ${e.lugar ? `<p class="evento-dia-lugar">📍 ${e.lugar}</p>` : ''}
+                    </div>
+                    <div class="evento-dia-arrow">→</div>
+                </div>
+            `).join('');
+            
+            document.getElementById('tituloEventosDia').textContent = fecha.toLocaleDateString('es-ES', opciones);
+            document.getElementById('contenidoEventosDia').innerHTML = html;
+            abrirModal('modalEventosDia');
+        }
+
+        function verDetalleEvento(id) {
+            const evento = eventosCache.find(e => e.id === id);
+            if (!evento) return;
+            
+            const fecha = new Date(evento.fecha);
+            
+            let html = `
+                <div class="detalle-evento-grid">
+                    <div class="detalle-item">
+                        <span class="detalle-label">📅 Fecha</span>
+                        <span class="detalle-value">${fecha.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                    </div>
+                    
+                    <div class="detalle-item">
+                        <span class="detalle-label">🕐 Horario</span>
+                        <span class="detalle-value">${evento.todoElDia ? 'Todo el día' : (evento.horaInicio ? `${evento.horaInicio}${evento.horaFin ? ` - ${evento.horaFin}` : ''}` : 'No especificado')}</span>
+                    </div>
+                    
+                    ${evento.lugar ? `
+                    <div class="detalle-item full-width">
+                        <span class="detalle-label">📍 Lugar</span>
+                        <span class="detalle-value">${evento.lugar}</span>
+                    </div>
+                    ` : ''}
+                </div>
+                
+                ${evento.descripcion ? `
+                <div class="detalle-descripcion">
+                    <span class="detalle-label">📝 Descripción</span>
+                    <div class="detalle-descripcion-texto">${evento.descripcion.replace(/\n/g, '<br>')}</div>
+                </div>
+                ` : ''}
+            `;
+            
+            document.getElementById('detalleEventoTitulo').textContent = evento.titulo;
+            document.getElementById('contenidoEventoDetalle').innerHTML = html;
+            document.getElementById('btnEditarDesdeDetalle').style.display = 'inline-flex';
+            document.getElementById('btnEditarDesdeDetalle').onclick = () => {
+                cerrarModal('modalEventoDetalle');
+                setTimeout(() => editarEvento(id), 300);
+            };
+            
+            abrirModal('modalEventoDetalle');
+        }
+
+        function toggleTodoElDia() {
+            const checkbox = document.getElementById('eventoTodoElDia');
+            const horasDiv = document.getElementById('horasEvento');
+            const horaInicio = document.getElementById('eventoHoraInicio');
+            const horaFin = document.getElementById('eventoHoraFin');
+            
+            if (checkbox.checked) {
+                horasDiv.classList.add('disabled');
+                horaInicio.value = '';
+                horaFin.value = '';
+            } else {
+                horasDiv.classList.remove('disabled');
+            }
+        }
+
         function abrirModalEvento() {
             document.getElementById('modalEventoTitulo').textContent = 'Nuevo Evento';
             document.getElementById('eventoId').value = '';
             document.getElementById('formEvento').reset();
+            document.getElementById('horasEvento').classList.remove('disabled');
             abrirModal('modalEvento');
-        }
-
-        function verEvento(id) {
-            verDetallesEvento(id);
-            editarEvento(id);
         }
 
         async function editarEvento(id) {
@@ -960,10 +1095,13 @@
                     document.getElementById('eventoId').value = e.id;
                     document.getElementById('eventoTitulo').value = e.titulo;
                     document.getElementById('eventoFecha').value = e.fecha;
+                    document.getElementById('eventoTodoElDia').checked = e.todoElDia || false;
                     document.getElementById('eventoHoraInicio').value = e.horaInicio || '';
                     document.getElementById('eventoHoraFin').value = e.horaFin || '';
                     document.getElementById('eventoDescripcion').value = e.descripcion || '';
                     document.getElementById('eventoLugar').value = e.lugar || '';
+                    
+                    toggleTodoElDia();
                     abrirModal('modalEvento');
                 }
             } catch (error) {
@@ -978,13 +1116,11 @@
             
             formData.append('titulo', document.getElementById('eventoTitulo').value);
             formData.append('fecha', document.getElementById('eventoFecha').value);
+            formData.append('todoElDia', document.getElementById('eventoTodoElDia').checked);
             formData.append('horaInicio', document.getElementById('eventoHoraInicio').value);
             formData.append('horaFin', document.getElementById('eventoHoraFin').value);
             formData.append('descripcion', document.getElementById('eventoDescripcion').value);
             formData.append('lugar', document.getElementById('eventoLugar').value);
-            
-            const imagen = document.getElementById('eventoImagen').files[0];
-            if (imagen) formData.append('imagen', imagen);
 
             try {
                 const url = id ? `/api/eventos/${id}` : '/api/eventos';
@@ -1062,7 +1198,7 @@
                             <span class="noticia-estado ${n.publicada ? 'publicada' : 'borrador'}">
                                 ${n.publicada ? 'Publicada' : 'Borrador'}
                             </span>
-                            <span class="noticia-fecha">${new Date(n.fechaPublicacion).toLocaleDateString('es-ES')}</span>
+                            <span class="noticia-fecha">${n.fechaPublicacion ? new Date(n.fechaPublicacion).toLocaleDateString('es-ES') : 'Sin fecha'}</span>
                         </div>
                         <div class="noticia-admin-actions">
                             <button class="btn-icon" onclick="editarNoticia('${n.id}')" title="Editar">✏️</button>
@@ -1090,6 +1226,7 @@
             formData.append('autores', document.getElementById('noticiaAutores').value);
             formData.append('contenido', document.getElementById('noticiaContenido').value);
             formData.append('publicada', 'true');
+            formData.append('fechaPublicacion', document.getElementById('noticiaFechaPublicacion').value);
             
             const enlaces = document.getElementById('noticiaEnlaces').value.split('\n').filter(e => e.trim());
             formData.append('enlaces', JSON.stringify(enlaces));
@@ -1167,6 +1304,7 @@
                 document.getElementById('noticiaTitulo').value = noticia.titulo;
                 document.getElementById('noticiaAutores').value = Array.isArray(noticia.autores) ? noticia.autores.join(', ') : (noticia.autores || '');
                 document.getElementById('noticiaContenido').value = noticia.contenido;
+                document.getElementById('noticiaFechaPublicacion').value = noticia.fechaPublicacion ? new Date(noticia.fechaPublicacion).toISOString().slice(0, 16) : '';
                 
                 const enlaces = Array.isArray(noticia.enlaces) ? noticia.enlaces : [];
                 document.getElementById('noticiaEnlaces').value = enlaces.join('\n');
