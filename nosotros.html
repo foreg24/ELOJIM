@@ -228,87 +228,88 @@
     </footer>
 
     <script>
-        // Mobile Menu
-        const hamburgerBtn = document.getElementById('hamburgerBtn');
-        const closeBtn = document.getElementById('closeBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
-        const mobileLinks = document.querySelectorAll('.mobile-nav-links a');
+     // Mobile Menu
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const closeBtn = document.getElementById('closeBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileLinks = document.querySelectorAll('.mobile-nav-links a');
 
-        hamburgerBtn.addEventListener('click', () => { mobileMenu.classList.add('active'); document.body.style.overflow = 'hidden'; });
-        closeBtn.addEventListener('click',     () => { mobileMenu.classList.remove('active'); document.body.style.overflow = ''; });
-        mobileLinks.forEach(l => l.addEventListener('click', () => { mobileMenu.classList.remove('active'); document.body.style.overflow = ''; }));
+    hamburgerBtn.addEventListener('click', () => { mobileMenu.classList.add('active'); document.body.style.overflow = 'hidden'; });
+    closeBtn.addEventListener('click',     () => { mobileMenu.classList.remove('active'); document.body.style.overflow = ''; });
+    mobileLinks.forEach(l => l.addEventListener('click', () => { mobileMenu.classList.remove('active'); document.body.style.overflow = ''; }));
 
-        // ── Carrusel Reels ──
-        // Añade más reels al array cuando los tengas.
-        // src = https://www.instagram.com/reel/SHORTCODE/embed/
-        const reels = [
-            { src: 'https://www.instagram.com/reel/DHFbKC2snc0/embed', label: 'Reel 1' }
-            
-        ];
+    // ── Carrusel Reels ──
+    const reels = [
+        { src: 'https://www.instagram.com/reel/DHFbKC2snc0/embed', label: 'Reel 1' },
+        { src: 'https://www.instagram.com/reel/DXOH6EYDkOP/embed', label: 'Reel 2' },
+        { src: 'https://www.instagram.com/reel/DXOIKCRDq4h/embed', label: 'Reel 3' }
+    ];
 
-        // Rellenar hasta al menos 3 ítems
-        let pool = [...reels];
-        while (pool.length < 3) pool = [...pool, ...reels];
+    let pool = [...reels];
+    while (pool.length < 3) pool = [...pool, ...reels];
 
-        // Triplicar para rueda infinita
-        const items = [...pool, ...pool, ...pool];
-        let centerIndex = pool.length + 1;
+    const items = [...pool, ...pool, ...pool];
+    let centerIndex = pool.length + 1;
 
-        const track   = document.getElementById('carruselTrack');
-        const btnPrev = document.getElementById('btnAnterior');
-        const btnNext = document.getElementById('btnSiguiente');
+    const track   = document.getElementById('carruselTrack');
+    const btnPrev = document.getElementById('btnAnterior');
+    const btnNext = document.getElementById('btnSiguiente');
 
-        function vc() { return window.innerWidth <= 768 ? 1 : 3; }
+    function vc() { return window.innerWidth <= 768 ? 1 : 3; }
 
-        function buildTrack() {
-            track.innerHTML = items.map((r, i) => `
-                <div class="reel-item" id="ri-${i}">
-                    <iframe src="${r.src}" allowtransparency="true" allowfullscreen="true"
-                        scrolling="no" frameborder="0" loading="lazy" title="${r.label}"></iframe>
-                </div>`).join('');
-        }
+    function buildTrack() {
+        track.innerHTML = items.map((r, i) => `
+            <div class="reel-item" id="ri-${i}">
+                <iframe src="${r.src}" allowtransparency="true" allowfullscreen="true"
+                    scrolling="no" frameborder="0" loading="lazy" title="${r.label}"></iframe>
+            </div>`).join('');
+    }
 
-        function itemWidth() {
-            const gap = 16;
-            return (track.parentElement.offsetWidth - gap * (vc() - 1)) / vc();
-        }
+    function itemWidth() {
+        const gap = 16;
+        return (track.parentElement.offsetWidth - gap * (vc() - 1)) / vc();
+    }
 
-        function paint(animate) {
-            const iw  = itemWidth();
-            const gap = 16;
-            const off = (centerIndex - Math.floor(vc() / 2)) * (iw + gap);
+    function paint(animate) {
+        const iw  = itemWidth();
+        const gap = 16;
+        const visible = vc();
+        // En mobile (1 visible) mostramos directo el centerIndex sin desplazar
+        const offset = visible === 1
+            ? centerIndex * (iw + gap)
+            : (centerIndex - Math.floor(visible / 2)) * (iw + gap);
 
-            track.style.transition = animate ? 'transform 0.42s cubic-bezier(0.25,0.46,0.45,0.94)' : 'none';
-            track.style.transform  = `translateX(-${off}px)`;
+        track.style.transition = animate ? 'transform 0.42s cubic-bezier(0.25,0.46,0.45,0.94)' : 'none';
+        track.style.transform  = `translateX(-${offset}px)`;
 
-            document.querySelectorAll('.reel-item').forEach((el, i) => {
-                const isC = i === centerIndex;
-                el.classList.toggle('center-reel', isC);
-                el.classList.toggle('side-reel', !isC);
-                el.style.width      = `${iw}px`;
-                el.style.flexShrink = '0';
-            });
-        }
+        document.querySelectorAll('.reel-item').forEach((el, i) => {
+            const isC = i === centerIndex;
+            el.classList.toggle('center-reel', isC);
+            el.classList.toggle('side-reel', !isC);
+            el.style.width      = `${iw}px`;
+            el.style.flexShrink = '0';
+        });
+    }
 
-        function move(dir) {
-            centerIndex += dir;
-            paint(true);
-            setTimeout(() => {
-                if (centerIndex >= pool.length * 2) { centerIndex -= pool.length; paint(false); }
-                else if (centerIndex < pool.length)  { centerIndex += pool.length; paint(false); }
-            }, 450);
-        }
+    function move(dir) {
+        centerIndex += dir;
+        paint(true);
+        setTimeout(() => {
+            if (centerIndex >= pool.length * 2) { centerIndex -= pool.length; paint(false); }
+            else if (centerIndex < pool.length)  { centerIndex += pool.length; paint(false); }
+        }, 450);
+    }
 
-        btnNext.addEventListener('click', () => move(1));
-        btnPrev.addEventListener('click', () => move(-1));
+    btnNext.addEventListener('click', () => move(1));
+    btnPrev.addEventListener('click', () => move(-1));
 
-        let tx = 0;
-        track.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
-        track.addEventListener('touchend',   e => { const d = tx - e.changedTouches[0].clientX; if (Math.abs(d) > 40) move(d > 0 ? 1 : -1); });
+    let tx = 0;
+    track.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+    track.addEventListener('touchend',   e => { const d = tx - e.changedTouches[0].clientX; if (Math.abs(d) > 40) move(d > 0 ? 1 : -1); });
 
-        buildTrack();
-        paint(false);
-        window.addEventListener('resize', () => paint(false));
-    </script>
+    buildTrack();
+    paint(false);
+    window.addEventListener('resize', () => paint(false));
+</script>
 </body>
 </html>

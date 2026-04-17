@@ -1537,7 +1537,7 @@ body {
     }
 
     /* Carrusel: ocultar items laterales en móvil */
-    .reel-item.side-reel { display: none; }
+    .reel-item.side-reel { visibility: hidden; pointer-events: none; }
 }
 
 @media (max-width: 640px) {
