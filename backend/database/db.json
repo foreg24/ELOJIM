@@ -110,6 +110,28 @@
       "publicada": "true",
       "oculta": false,
       "imagenesExistentes": "[{\"url\":\"http://localhost:3000/uploads/1776075727662-29aea50a-be13-48fe-a9f3-00fb844e045c.jpeg\",\"link\":\"\"}]"
+    },
+    {
+      "id": "6e3476ec-2017-44be-aac2-695a20e8cbee",
+      "slug": "elojim-jadach-respalda-la-ii-hackathon-de-la-usco-enfocada-en-combatir-el-hambre-y-la-pobreza-urbana-",
+      "titulo": "Elojim Jadach respalda la II Hackathon de la USCO enfocada en combatir el hambre y la pobreza urbana 🌁",
+      "contenido": "En un esfuerzo por impulsar soluciones tecnológicas con impacto social, el líder y gestor tecnológico Elojim Jadach anunció su apoyo a la II Hackathon “Tecnología para combatir el hambre y la pobreza en zonas urbanas”, organizada por el semillero Devurity del programa de Ingeniería de Software de la Universidad Surcolombiana (USCO).\r\n\r\nEl evento, que se llevará a cabo en la ciudad de Neiva, reúne a estudiantes, desarrolladores y jóvenes innovadores con el objetivo de diseñar propuestas tecnológicas que enfrenten problemáticas sociales urgentes. La iniciativa busca aprovechar herramientas como el desarrollo de software, inteligencia artificial y análisis de datos para generar soluciones sostenibles en contextos urbanos vulnerables.\r\n\r\nSegún la convocatoria difundida por la Facultad de Ingeniería de la USCO, la hackathon plantea un “reto urgente y transformador” centrado en el uso de la tecnología como medio para reducir el hambre y la pobreza en las ciudades, promoviendo además el trabajo colaborativo y multidisciplinario entre los participantes.\r\n\r\nEl respaldo de Elojim Jadach fortalece el alcance del evento, al aportar visibilidad y acompañamiento a iniciativas juveniles que buscan impactar positivamente la región surcolombiana. Este tipo de espacios no solo fomentan la innovación, sino que también consolidan a la academia como un actor clave en la solución de problemáticas sociales.\r\n\r\nLa II Hackathon se consolida así como una plataforma para que los futuros ingenieros de software de la USCO desarrollen proyectos con propósito, alineando la tecnología con el bienestar social y el desarrollo sostenible.",
+      "autores": [
+        "Jesús Forero"
+      ],
+      "enlaces": [
+        "https://www.facebook.com/FacultadDeIngenieriaUSCO/posts/-listo-para-innovar-con-prop%C3%B3sitoel-ii-hackathon-llega-con-un-reto-urgente-y-tra/1549016147225114/"
+      ],
+      "imagenes": [
+        {
+          "url": "/uploads/1776437455845-7dd4c855-11ec-4d69-a375-c8037e0ea42e.jpeg",
+          "link": null
+        }
+      ],
+      "fechaPublicacion": "2026-04-15T20:50",
+      "publicada": "true",
+      "oculta": false,
+      "imagenesExistentes": "[{\"url\":\"http://localhost:3000/uploads/1776437455845-7dd4c855-11ec-4d69-a375-c8037e0ea42e.jpeg\",\"link\":\"\"}]"
     }
   ],
   "contactos": [
