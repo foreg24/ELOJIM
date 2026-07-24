@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -62,7 +62,7 @@
                 <span></span>
                 <span></span>
             </button>
-            <a href="index.html" class="logo">
+            <a href="/" class="logo">
                 <img src="logo2.png" alt="Logo">
                 <span>Fundación Elojim</span>
             </a>
@@ -71,7 +71,7 @@
         <!-- Sidebar -->
         <aside class="admin-sidebar" id="adminSidebar" style="display: flex; flex-direction: column; height: 100vh; height: 100dvh;">
             <div class="sidebar-header" style="flex-shrink: 0;">
-                <a href="index.html" class="logo">
+                <a href="/" class="logo">
                     <img src="logo2.png" alt="Logo">
                     <div class="logo-text">
                         <span class="logo-main">Fundación Elojim</span>
@@ -367,8 +367,9 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="noticiaEnlaces">Enlaces relacionados (uno por línea)</label>
-                            <textarea id="noticiaEnlaces" rows="3" placeholder="https://ejemplo.com&#10;https://otro-enlace.com"></textarea>
+                            <label>Enlaces destacados</label>
+                            <div class="enlaces-lista" id="noticiaEnlacesLista"></div>
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="agregarEnlaceRow()">+ Añadir enlace</button>
                         </div>
                         
                         <div class="form-actions">
@@ -1214,6 +1215,27 @@
             }
         }
 
+        function agregarEnlaceRow(url = '', nombre = '') {
+            const lista = document.getElementById('noticiaEnlacesLista');
+            const row = document.createElement('div');
+            row.className = 'enlace-row';
+            row.innerHTML = `
+                <input type="url" class="enlace-url" placeholder="https://ejemplo.com" value="${url.replace(/"/g, '&quot;')}">
+                <input type="text" class="enlace-nombre" placeholder="Nombre que se mostrará" value="${nombre.replace(/"/g, '&quot;')}">
+                <button type="button" class="btn-icon btn-danger" onclick="this.closest('.enlace-row').remove()" title="Quitar">×</button>
+            `;
+            lista.appendChild(row);
+        }
+
+        function recolectarEnlaces() {
+            return Array.from(document.querySelectorAll('#noticiaEnlacesLista .enlace-row'))
+                .map(row => ({
+                    url: row.querySelector('.enlace-url').value.trim(),
+                    nombre: row.querySelector('.enlace-nombre').value.trim()
+                }))
+                .filter(e => e.url);
+        }
+
         document.getElementById('formNoticia')?.addEventListener('submit', async (e) => {
             e.preventDefault();
             
@@ -1228,8 +1250,7 @@
             formData.append('publicada', 'true');
             formData.append('fechaPublicacion', document.getElementById('noticiaFechaPublicacion').value);
             
-            const enlaces = document.getElementById('noticiaEnlaces').value.split('\n').filter(e => e.trim());
-            formData.append('enlaces', JSON.stringify(enlaces));
+            formData.append('enlaces', JSON.stringify(recolectarEnlaces()));
             
             const nuevasImagenes = imagenesNoticia;
             nuevasImagenes.forEach((file, index) => {
@@ -1268,7 +1289,8 @@
                     delete form.dataset.editId;
                     imagenesNoticia = [];
                     document.getElementById('imagenesPreview').innerHTML = '';
-                    
+                    document.getElementById('noticiaEnlacesLista').innerHTML = '';
+
                     const submitBtn = form.querySelector('button[type="submit"]');
                     submitBtn.textContent = 'Publicar noticia';
                     
@@ -1307,8 +1329,12 @@
                 document.getElementById('noticiaFechaPublicacion').value = noticia.fechaPublicacion ? new Date(noticia.fechaPublicacion).toISOString().slice(0, 16) : '';
                 
                 const enlaces = Array.isArray(noticia.enlaces) ? noticia.enlaces : [];
-                document.getElementById('noticiaEnlaces').value = enlaces.join('\n');
-                
+                document.getElementById('noticiaEnlacesLista').innerHTML = '';
+                enlaces.forEach(e => {
+                    if (typeof e === 'string') agregarEnlaceRow(e, '');
+                    else agregarEnlaceRow(e.url || '', e.nombre || '');
+                });
+
                 document.getElementById('formNoticia').dataset.editId = id;
                 document.getElementById('formNoticia').dataset.editMode = 'true';
                 
