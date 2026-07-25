@@ -9,6 +9,12 @@
                     "*.html",
                     "*.css",
                     "*.png",
+                    "*.jpg",
+                    "*.jpeg",
+                    "*.svg",
+                    "*.webp",
+                    "*.gif",
+                    "*.ico",
                     "uploads/**",
                     "programas/**"
                 ]
