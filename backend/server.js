@@ -2,12 +2,11 @@ const express = require('express');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
-const fs = require('fs');
 const path = require('path');
-const { v4: uuidv4 } = require('uuid');
 require('dotenv').config();
 
 const db = require('./db');
+const { subirArchivo } = require('./storage');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -17,19 +16,11 @@ const SITE_ROOT = path.join(__dirname, '..');
 app.use(cors());
 app.use(express.json());
 
-// Crear carpeta de uploads si no existe
-const uploadsDir = path.join(SITE_ROOT, 'uploads');
-if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
-
-// Configuración de multer
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => cb(null, uploadsDir),
-    filename: (req, file, cb) => {
-        const uniqueName = `${Date.now()}-${uuidv4()}${path.extname(file.originalname)}`;
-        cb(null, uniqueName);
-    }
-});
-const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } });
+// Los archivos subidos (imágenes de eventos/noticias) se reciben en memoria y se
+// suben a Firebase Storage — no se escriben a disco (el filesystem es de solo lectura
+// en plataformas serverless como Vercel). La carpeta /uploads local se sigue sirviendo
+// como estática solo para las imágenes ya existentes de antes de esta migración.
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024 } });
 
 // Middleware de autenticación
 const authMiddleware = (req, res, next) => {
@@ -143,7 +134,7 @@ app.get('/api/eventos', asyncHandler(async (req, res) => {
 app.post('/api/eventos', authMiddleware, upload.single('imagen'), asyncHandler(async (req, res) => {
     const evento = {
         ...req.body,
-        imagen: req.file ? `/uploads/${req.file.filename}` : null,
+        imagen: req.file ? await subirArchivo(req.file, 'eventos') : null,
         fecha: req.body.fecha,
         horaInicio: req.body.horaInicio,
         horaFin: req.body.horaFin
@@ -153,7 +144,7 @@ app.post('/api/eventos', authMiddleware, upload.single('imagen'), asyncHandler(a
 
 app.put('/api/eventos/:id', authMiddleware, upload.single('imagen'), asyncHandler(async (req, res) => {
     const updateData = { ...req.body };
-    if (req.file) updateData.imagen = `/uploads/${req.file.filename}`;
+    if (req.file) updateData.imagen = await subirArchivo(req.file, 'eventos');
 
     const actualizado = await db.update(db.COLLECTIONS.eventos, req.params.id, updateData);
     if (!actualizado) return res.status(404).json({ error: 'No encontrado' });
@@ -204,10 +195,10 @@ app.post('/api/noticias', authMiddleware, upload.array('imagenes', 5), asyncHand
 
     const enlaces = normalizarEnlaces(req.body.enlaces);
 
-    const imagenes = req.files ? req.files.map(f => ({
-        url: `/uploads/${f.filename}`,
-        link: req.body[`link_${f.filename}`] || null
-    })) : [];
+    const imagenes = req.files ? await Promise.all(req.files.map(async f => ({
+        url: await subirArchivo(f, 'noticias'),
+        link: req.body[`link_${f.originalname}`] || null
+    }))) : [];
 
     const noticia = {
         slug: slugify(req.body.titulo),
@@ -238,10 +229,10 @@ app.put('/api/noticias/:id', authMiddleware, upload.array('imagenes', 5), asyncH
     }
 
     if (req.files && req.files.length > 0) {
-        updateData.imagenes = req.files.map(f => ({
-            url: `/uploads/${f.filename}`,
-            link: req.body[`link_${f.filename}`] || null
-        }));
+        updateData.imagenes = await Promise.all(req.files.map(async f => ({
+            url: await subirArchivo(f, 'noticias'),
+            link: req.body[`link_${f.originalname}`] || null
+        })));
     }
 
     if (updateData.publicada !== undefined) updateData.publicada = updateData.publicada === 'true';
@@ -324,7 +315,9 @@ app.get('/index.html', (req, res) => res.redirect(301, '/'));
 // ARCHIVOS ESTÁTICOS - DESPUÉS de las rutas API y de página
 // ============================================
 
-app.use('/uploads', express.static(uploadsDir));
+// /uploads solo conserva las imágenes que ya existían antes de migrar a Firebase Storage.
+// Los archivos nuevos se suben directamente a Storage (ver backend/storage.js) y no tocan disco.
+app.use('/uploads', express.static(path.join(SITE_ROOT, 'uploads')));
 app.use(express.static(SITE_ROOT, { index: false }));
 
 // Manejador de errores centralizado
@@ -333,9 +326,15 @@ app.use((err, req, res, next) => {
     res.status(500).json({ error: err.message || 'Error interno del servidor' });
 });
 
-// Iniciar servidor
-app.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
-    console.log(`Admin: http://localhost:${PORT}/admin`);
-    console.log(`Home:  http://localhost:${PORT}/`);
-});
+// Local: levantar el servidor normalmente.
+// En Vercel (u otro entorno serverless) este archivo se importa como handler y
+// nunca se llama a listen(); Vercel invoca la app exportada directamente.
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`Servidor corriendo en http://localhost:${PORT}`);
+        console.log(`Admin: http://localhost:${PORT}/admin`);
+        console.log(`Home:  http://localhost:${PORT}/`);
+    });
+}
+
+module.exports = app;

@@ -1,11 +1,12 @@
 const admin = require('firebase-admin');
 
 let firestoreDb = null;
+let initialized = false;
 
 // Inicializa Firebase Admin usando la variable de entorno FIREBASE_SERVICE_ACCOUNT_JSON,
 // que debe contener el JSON completo de la cuenta de servicio (como una sola línea de texto).
-function initFirestore() {
-    if (firestoreDb) return firestoreDb;
+function init() {
+    if (initialized) return;
 
     const raw = process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
     if (!raw) {
@@ -22,17 +23,25 @@ function initFirestore() {
         throw new Error('FIREBASE_SERVICE_ACCOUNT_JSON no es un JSON válido: ' + err.message);
     }
 
+    const storageBucket = process.env.FIREBASE_STORAGE_BUCKET || `${serviceAccount.project_id}.appspot.com`;
+
     admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount)
+        credential: admin.credential.cert(serviceAccount),
+        storageBucket
     });
 
     firestoreDb = admin.firestore();
-    return firestoreDb;
+    initialized = true;
 }
 
 function getFirestore() {
-    if (!firestoreDb) return initFirestore();
+    init();
     return firestoreDb;
 }
 
-module.exports = { initFirestore, getFirestore, admin };
+function getBucket() {
+    init();
+    return admin.storage().bucket();
+}
+
+module.exports = { getFirestore, getBucket, admin };
